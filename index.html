@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaksimLive | Официальный сайт</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0E1014; color: #fff; }
+        :root { --accent-color: #F60261; }
+        
+        .live-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .tab-btn { transition: all 0.2s ease; border-bottom: 2px solid transparent; }
+        .tab-active { border-bottom: 2px solid var(--accent-color); color: #fff; }
+        
+        .stream-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        @media (min-width: 1024px) {
+            .stream-layout {
+                flex-direction: row;
+                height: 70vh;
+            }
+        }
+
+        .player-box {
+            width: 100%;
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        @media (min-width: 1024px) {
+            .player-box {
+                flex: 1;
+                height: 100%;
+            }
+        }
+        .player-box-mobile-ratio {
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+        @media (min-width: 1024px) {
+            .player-box-mobile-ratio {
+                padding-bottom: 0;
+                height: 100%;
+            }
+        }
+
+        .chat-box {
+            width: 100%;
+            background: #16181D;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        @media (min-width: 1024px) {
+            .chat-box {
+                width: 400px;
+                min-width: 350px;
+                height: 100%;
+            }
+        }
+
+        .embed-iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        .skeleton { background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        .warning-box { display: none; position: absolute; inset: 0; background: #1a1a1a; color: white; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 20; }
+        
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; transform: translateY(10px); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        .donate-float-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #F60261, #ff4d4d);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(246, 2, 97, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .donate-float-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(246, 2, 97, 0.6); }
+        .donate-pulse-anim { animation: donate-pulse 2s infinite; }
+        @keyframes donate-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(246, 2, 97, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(246, 2, 97, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(246, 2, 97, 0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <a href="https://www.donationalerts.com/r/maksimsusyaev150" target="_blank" class="donate-float-btn donate-pulse-anim">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        Поддержать
+    </a>
+
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-[#0E1014]/90 backdrop-blur-md">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/" class="font-bold text-xl tracking-tight">MAKSIM<span style="color: var(--accent-color)">LIVE</span></a>
+            <div id="liveBadgeNav" class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 transition-all">
+                <span class="dot w-2 h-2 rounded-full bg-gray-500"></span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">ПОДКЛЮЧЕНИЕ...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        
+        <!-- Инфо о стриме -->
+        <section class="mb-4">
+            <div class="flex items-center gap-2 mb-1">
+                <div id="statusDot" class="w-2 h-2 rounded-full bg-gray-500"></div>
+                <span id="statusText" class="text-xs font-bold uppercase tracking-widest text-gray-500">ПОЛУЧЕНИЕ ДАННЫХ...</span>
+            </div>
+            <h1 id="streamTitle" class="text-xl md:text-2xl font-bold text-white truncate skeleton h-7 w-3/4 mb-1"></h1>
+            <p class="text-sm text-gray-500">Категория: <span id="streamGame" class="text-gray-300">—</span> • Зрители: <span id="streamViewers" class="text-gray-300">—</span></p>
+        </section>
+
+        <!-- Табы -->
+        <div class="flex border-b border-white/10 bg-[#0E1014] mb-4 rounded-t-xl">
+            <button class="tab-btn tab-active flex-1 py-3 text-sm font-medium text-gray-500" data-platform="twitch">Twitch</button>
+            <button class="tab-btn flex-1 py-3 text-sm font-medium text-gray-500" data-platform="youtube">YouTube</button>
+        </div>
+
+        <!-- Блок Плеер + Чат -->
+        <div class="stream-layout mb-8">
+            
+            <!-- Плеер -->
+            <div class="player-box player-box-mobile-ratio">
+                <div id="localWarning" class="warning-box">
+                    <h3 class="text-lg font-bold mb-2" style="color: var(--accent-color)">Браузер заблокировал контент</h3>
+                    <p class="text-gray-400 text-sm mb-4 max-w-md">
+                        Вы открыли файл напрямую (<code>file://</code>).<br>
+                        Используйте VS Code + Live Server.
+                    </p>
+                </div>
+                <div id="twitchEmbed" class="absolute inset-0">
+                    <iframe id="twitchPlayerIframe" class="embed-iframe" src="" allowfullscreen></iframe>
+                </div>
+                <div id="youtubeEmbed" class="absolute inset-0 hidden bg-black"></div>
+            </div>
+
+            <!-- Чат -->
+            <div class="chat-box relative">
+                <div id="twitchChat" class="absolute inset-0">
+                    <iframe id="twitchChatIframe" class="embed-iframe" src="" ></iframe>
+                </div>
+                <div id="youtubeChat" class="absolute inset-0 hidden bg-[#16181D] flex items-center justify-center p-4 text-center">
+                     <div id="ytChatContent" class="w-full h-full"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок Видео -->
+        <section id="videosSection" class="hidden mb-12 fade-in">
+            <h2 class="text-xl font-bold mb-4">Последние видео</h2>
+            <div id="videosGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="aspect-video bg-white/5 rounded-lg skeleton"></div>
+                <div class="aspect-video bg-white/5 rounded-lg skeleton"></div>
+                <div class="aspect-video bg-white/5 rounded-lg skeleton"></div>
+            </div>
+        </section>
+
+        <!-- Соцсети -->
+        <section class="fade-in" style="animation-delay: 0.3s;">
+            <h2 class="text-xl font-bold mb-4">Социальные сети</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="https://www.donationalerts.com/r/maksimsusyaev150" target="_blank" class="group block p-5 bg-[#16181D] rounded-xl border border-white/5 hover:border-[#F60261]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#F60261]/10">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white/5 rounded-lg group-hover:bg-[#F60261]/10 transition">
+                            <svg class="w-6 h-6 text-[#F60261]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white group-hover:text-[#F60261] transition">Поддержать донатом</h3>
+                            <p class="text-sm text-gray-500">DonationAlerts</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://t.me/maksimsusyaev150_twitch" target="_blank" class="group block p-5 bg-[#16181D] rounded-xl border border-white/5 hover:border-[#2AABEE]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#2AABEE]/10">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white/5 rounded-lg group-hover:bg-[#2AABEE]/10 transition">
+                            <svg class="w-6 h-6 text-[#2AABEE]" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white group-hover:text-[#2AABEE] transition">Telegram</h3>
+                            <p class="text-sm text-gray-500">Новости, анонсы стримов</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://discord.gg/Fx2xXyvr" target="_blank" class="group block p-5 bg-[#16181D] rounded-xl border border-white/5 hover:border-[#5865F2]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#5865F2]/10">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white/5 rounded-lg group-hover:bg-[#5865F2]/10 transition">
+                            <svg class="w-6 h-6 text-[#5865F2]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white group-hover:text-[#5865F2] transition">Discord</h3>
+                            <p class="text-sm text-gray-500">Общайся с нами</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-white/10 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-xs text-gray-500">© 2024 MaksimLive. All rights reserved.</div>
+    </footer>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // --- КОНФИГУРАЦИЯ ---
+            const CHANNEL_NAME = 'maksimsusyaev150';
+            const YT_CHANNEL_ID = 'UCEBTFu4B4NevkLbk1Y5QT5w';
+            const TWITCH_PROXY_URL = 'https://api.rss2json.com/utils/twitch/channel/';
+            
+            // --- DOM ЭЛЕМЕНТЫ ---
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const localWarning = document.getElementById('localWarning');
+            
+            const twitchEmbed = document.getElementById('twitchEmbed');
+            const twitchPlayerIframe = document.getElementById('twitchPlayerIframe');
+            const twitchChat = document.getElementById('twitchChat');
+            const twitchChatIframe = document.getElementById('twitchChatIframe');
+            
+            const youtubeEmbed = document.getElementById('youtubeEmbed');
+            const youtubeChat = document.getElementById('youtubeChat');
+            const ytChatContent = document.getElementById('ytChatContent');
+            
+            const videosSection = document.getElementById('videosSection');
+            const videosGrid = document.getElementById('videosGrid');
+
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const streamTitle = document.getElementById('streamTitle');
+            const streamGame = document.getElementById('streamGame');
+            const streamViewers = document.getElementById('streamViewers');
+            const liveBadgeNav = document.getElementById('liveBadgeNav');
+
+            let ytLatestVideoId = null; 
+            let parentHost = window.location.hostname;
+            let currentPlatform = 'twitch'; // Отслеживаем текущую платформу
+
+            // --- 1. ЗАПУСК ---
+            if (window.location.protocol === 'file:') {
+                localWarning.style.display = 'flex';
+                streamTitle.textContent = "Откройте сайт через сервер (Live Server)";
+                streamTitle.classList.remove('skeleton');
+            } else {
+                if (!parentHost) parentHost = 'localhost';
+                initTwitch();
+                fetchTwitchData(); // Первичная загрузка
+                loadYoutubeGrid(); 
+                setInterval(checkCurrentPlatform, 60000); // Автообновление
+            }
+
+            // --- 2. ЛОГИКА TWITCH ---
+            function initTwitch() {
+                twitchPlayerIframe.src = `https://player.twitch.tv/?channel=${CHANNEL_NAME}&parent=${parentHost}&muted=true`;
+                twitchChatIframe.src = `https://www.twitch.tv/embed/${CHANNEL_NAME}/chat?darkpopout&parent=${parentHost}`;
+            }
+
+            async function fetchTwitchData() {
+                try {
+                    const res = await fetch(TWITCH_PROXY_URL + CHANNEL_NAME);
+                    if (!res.ok) throw new Error('Error');
+                    const data = await res.json();
+
+                    // Обновляем UI только если мы сейчас на вкладке Twitch
+                    if (currentPlatform === 'twitch') {
+                        if (data && data.live) {
+                            updateUI_Twitch(true, data.title || "Прямой эфир", data.game || "Just Chatting", data.viewers || 0);
+                        } else {
+                            updateUI_Twitch(false, "Стример сейчас отдыхает", "Офлайн", 0);
+                        }
+                    }
+                } catch (e) {
+                    if (currentPlatform === 'twitch') {
+                        updateUI_Twitch(false, "Ошибка загрузки данных", "—", 0);
+                    }
+                }
+            }
+
+            function updateUI_Twitch(isLive, title, game, viewers) {
+                streamTitle.classList.remove('skeleton');
+                streamTitle.textContent = title;
+                streamGame.textContent = game;
+                streamViewers.textContent = viewers > 0 ? viewers.toLocaleString('ru-RU') : "—";
+
+                if (isLive) {
+                    statusDot.className = "w-2 h-2 rounded-full bg-red-500 live-pulse";
+                    statusText.textContent = "LIVE";
+                    statusText.style.color = "#F60261"; // Розовый
+                    
+                    liveBadgeNav.querySelector('.dot').className = "w-2 h-2 rounded-full bg-red-500 live-pulse";
+                    liveBadgeNav.querySelector('span:last-child').textContent = "LIVE";
+                    liveBadgeNav.querySelector('span:last-child').style.color = "#F60261";
+                } else {
+                    statusDot.className = "w-2 h-2 rounded-full bg-gray-500";
+                    statusText.textContent = "OFFLINE";
+                    statusText.style.color = "#888";
+                    
+                    liveBadgeNav.querySelector('.dot').className = "w-2 h-2 rounded-full bg-gray-500";
+                    liveBadgeNav.querySelector('span:last-child').textContent = "OFFLINE";
+                    liveBadgeNav.querySelector('span:last-child').style.color = "#888";
+                }
+            }
+
+            // --- 3. ЛОГИКА YOUTUBE ---
+            function getDomain() {
+                return window.location.hostname || 'localhost';
+            }
+
+            async function fetchYoutubeData() {
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`);
+                const data = await res.json();
+                if (data.status === 'ok' && data.items.length > 0) {
+                    const latest = data.items[0];
+                    let videoId = null;
+                    try {
+                        const urlParams = new URLSearchParams(new URL(latest.link).search);
+                        videoId = urlParams.get('v');
+                    } catch(e) {
+                        videoId = latest.link.split('/').pop();
+                    }
+                    
+                    ytLatestVideoId = videoId;
+
+                    // Обновляем UI только если мы на вкладке YouTube
+                    if (currentPlatform === 'youtube') {
+                        updateUI_Youtube(latest.title);
+                        
+                        // Загружаем плеер
+                        youtubeEmbed.innerHTML = `<iframe class="embed-iframe" src="https://www.youtube.com/embed/${ytLatestVideoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                        
+                        // Загружаем чат
+                        const domain = getDomain();
+                        if (ytLatestVideoId && window.location.protocol !== 'file:') {
+                            ytChatContent.innerHTML = `<iframe class="embed-iframe" src="https://www.youtube.com/live_chat?v=${ytLatestVideoId}&embed_domain=${domain}" allowfullscreen></iframe>`;
+                        } else {
+                            ytChatContent.innerHTML = '<p class="text-gray-500 p-4 text-sm">Чат недоступен</p>';
+                        }
+                    }
+                }
+            }
+
+            function updateUI_Youtube(title) {
+                streamTitle.classList.remove('skeleton');
+                streamTitle.textContent = title; // Заголовок = названию видео
+                streamGame.textContent = "YouTube";
+                streamViewers.textContent = "—";
+
+                // Цвета YouTube (Красный)
+                statusDot.className = "w-2 h-2 rounded-full bg-red-600"; 
+                statusText.textContent = "VIDEO";
+                statusText.style.color = "#FF0000"; 
+                
+                liveBadgeNav.querySelector('.dot').className = "w-2 h-2 rounded-full bg-red-600";
+                liveBadgeNav.querySelector('span:last-child').textContent = "VIDEO";
+                liveBadgeNav.querySelector('span:last-child').style.color = "#FF0000";
+            }
+
+            async function loadYoutubeGrid() {
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`);
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    videosGrid.innerHTML = '';
+                    data.items.slice(0, 6).forEach(item => {
+                        videosGrid.innerHTML += `
+                            <a href="${item.link}" target="_blank" class="group block">
+                                <div class="overflow-hidden rounded-lg bg-white/5 border border-white/5 group-hover:border-accent/50 transition">
+                                    <div class="relative aspect-video overflow-hidden">
+                                        <img src="${item.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                    </div>
+                                    <div class="p-3">
+                                        <h3 class="text-sm font-medium text-white line-clamp-2">${item.title}</h3>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                    });
+                }
+            }
+
+            // --- 4. ПЕРЕКЛЮЧАТЕЛЬ ---
+            function checkCurrentPlatform() {
+                if (currentPlatform === 'twitch') fetchTwitchData();
+                // YouTube данные обновляются при клике, нет смысла их_poll'ить раз в минуту для заголовка
+            }
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const platform = this.dataset.platform;
+                    currentPlatform = platform; // Запоминаем выбор
+
+                    // Визуальное переключение табов
+                    tabBtns.forEach(b => { b.classList.remove('tab-active'); b.classList.add('text-gray-500'); });
+                    this.classList.add('tab-active'); this.classList.remove('text-gray-500');
+
+                    if (platform === 'twitch') {
+                        // Показываем Twitch элементы
+                        twitchEmbed.classList.remove('hidden');
+                        twitchChat.classList.remove('hidden');
+                        youtubeEmbed.classList.add('hidden');
+                        youtubeChat.classList.add('hidden');
+                        videosSection.classList.add('hidden');
+                        
+                        // Запрашиваем данные для Twitch
+                        fetchTwitchData(); 
+
+                    } else {
+                        // Показываем YouTube элементы
+                        twitchEmbed.classList.add('hidden');
+                        twitchChat.classList.add('hidden');
+                        youtubeEmbed.classList.remove('hidden');
+                        youtubeChat.classList.remove('hidden');
+                        videosSection.classList.remove('hidden');
+                        
+                        // Запрашиваем данные для YouTube
+                        fetchYoutubeData();
+                    }
+                });
+            });
+
+        })();
+    </script>
+</body>
+</html>
+```
