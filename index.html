@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -104,6 +103,25 @@
             70% { box-shadow: 0 0 0 15px rgba(246, 2, 97, 0); }
             100% { box-shadow: 0 0 0 0 rgba(246, 2, 97, 0); }
         }
+
+        /* Стили для карточек игр */
+        .game-card {
+            transition: all 0.3s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .copy-btn {
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            background: rgba(246, 2, 97, 0.2);
+        }
+        .copy-btn.copied {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -136,13 +154,14 @@
         </section>
 
         <!-- Табы -->
-        <div class="flex border-b border-white/10 bg-[#0E1014] mb-4 rounded-t-xl">
-            <button class="tab-btn tab-active flex-1 py-3 text-sm font-medium text-gray-500" data-platform="twitch">Twitch</button>
-            <button class="tab-btn flex-1 py-3 text-sm font-medium text-gray-500" data-platform="youtube">YouTube</button>
+        <div class="flex border-b border-white/10 bg-[#0E1014] mb-4 rounded-t-xl overflow-x-auto">
+            <button class="tab-btn tab-active flex-1 py-3 text-sm font-medium text-gray-500 whitespace-nowrap px-4" data-platform="twitch">Twitch</button>
+            <button class="tab-btn flex-1 py-3 text-sm font-medium text-gray-500 whitespace-nowrap px-4" data-platform="youtube">YouTube</button>
+            <button class="tab-btn flex-1 py-3 text-sm font-medium text-gray-500 whitespace-nowrap px-4" data-platform="games">🎮 Игры</button>
         </div>
 
-        <!-- Блок Плеер + Чат -->
-        <div class="stream-layout mb-8">
+        <!-- Блок Плеер + Чат (Twitch/YouTube) -->
+        <div id="streamContent" class="stream-layout mb-8">
             
             <!-- Плеер -->
             <div class="player-box player-box-mobile-ratio">
@@ -170,7 +189,85 @@
             </div>
         </div>
 
-        <!-- Блок Видео -->
+        <!-- Блок Игр (скрыт по умолчанию) -->
+        <div id="gamesContent" class="hidden mb-8 fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <!-- Кликер -->
+                <div class="game-card group block p-6 bg-[#16181D] rounded-xl border border-white/5 hover:border-[#F60261]/50 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-[#F60261]/10 rounded-lg">
+                            <svg class="w-8 h-8 text-[#F60261]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">Онлайн</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Кликер</h3>
+                    <p class="text-sm text-gray-400 mb-4">Моя собственная игра-кликер! Кликай, зарабатывай очки и развивайся.</p>
+                    <a href="https://ais-dev-hp7aptrk5b2jplq55aftoy-728480963619.europe-west2.run.app/" 
+                       target="_blank" 
+                       class="inline-flex items-center gap-2 px-4 py-2 bg-[#F60261] hover:bg-[#F60261]/80 text-white rounded-lg text-sm font-medium transition">
+                        Играть сейчас
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Minecraft -->
+                <div class="game-card group block p-6 bg-[#16181D] rounded-xl border border-white/5 hover:border-green-500/50 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-green-500/10 rounded-lg">
+                            <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">Сервер</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Minecraft</h3>
+                    <p class="text-sm text-gray-400 mb-4">Мой Minecraft сервер! Присоединяйся и играй вместе со мной.</p>
+                    <div class="space-y-2">
+                        <button onclick="copyIP()" 
+                                id="copyBtn"
+                                class="copy-btn w-full px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-medium transition flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            <span id="copyBtnText">Скопировать IP</span>
+                        </button>
+                        <div class="text-center text-xs text-gray-500 font-mono bg-black/30 py-2 rounded">
+                            maxsusyaev.aternos.me
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Steam -->
+                <div class="game-card group block p-6 bg-[#16181D] rounded-xl border border-white/5 hover:border-blue-500/50 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-blue-500/10 rounded-lg">
+                            <svg class="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11.979 0C5.666 0 .448 4.903.04 11.154l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.523 4.523-4.523 2.494 0 4.523 2.028 4.523 4.523s-2.029 4.523-4.523 4.523h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.519 3.396-3.396 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.125-1.377-1.383c-.635-.266-1.32-.264-1.95.006l1.469.609c.959.4 1.419 1.5 1.019 2.459-.402.959-1.501 1.417-2.46 1.018-.467-.193-.837-.56-1.03-1.025H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full">Профиль</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Steam</h3>
+                    <p class="text-sm text-gray-400 mb-4">Мой профиль в Steam. Посмотри во что я играю и добавь в друзья!</p>
+                    <a href="https://steamcommunity.com/profiles/76561199128139673/" 
+                       target="_blank" 
+                       class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition">
+                        Открыть профиль
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Блок Видео (только для YouTube) -->
         <section id="videosSection" class="hidden mb-12 fade-in">
             <h2 class="text-xl font-bold mb-4">Последние видео</h2>
             <div id="videosGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -183,7 +280,8 @@
         <!-- Соцсети -->
         <section class="fade-in" style="animation-delay: 0.3s;">
             <h2 class="text-xl font-bold mb-4">Социальные сети</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
                 <a href="https://www.donationalerts.com/r/maksimsusyaev150" target="_blank" class="group block p-5 bg-[#16181D] rounded-xl border border-white/5 hover:border-[#F60261]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#F60261]/10">
                     <div class="flex items-center gap-4">
                         <div class="p-3 bg-white/5 rounded-lg group-hover:bg-[#F60261]/10 transition">
@@ -219,6 +317,49 @@
                         </div>
                     </div>
                 </a>
+
+                <a href="https://vk.com/maksimsusyaev150" target="_blank" class="group block p-5 bg-[#16181D] rounded-xl border border-white/5 hover:border-[#4C75A3]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#4C75A3]/10">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white/5 rounded-lg group-hover:bg-[#4C75A3]/10 transition">
+                            <svg class="w-6 h-6 text-[#4C75A3]" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.69 17.123h-1.744c-.66 0-.862-.523-2.049-1.714-1.033-1.033-1.49-1.171-1.744-1.171-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4 8.673 4 8.231c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.049.17.491-.085.745-.576.745z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white group-hover:text-[#4C75A3] transition">ВКонтакте</h3>
+                            <p class="text-sm text-gray-500">Моя страница ВК</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://youtube.com/@maksimsusyaev150" target="_blank" class="group block p-5 bg-[#16181D] rounded-xl border border-white/5 hover:border-red-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white/5 rounded-lg group-hover:bg-red-500/10 transition">
+                            <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white group-hover:text-red-500 transition">YouTube</h3>
+                            <p class="text-sm text-gray-500">Видео и стримы</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://twitch.tv/maksimsusyaev150" target="_blank" class="group block p-5 bg-[#16181D] rounded-xl border border-white/5 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white/5 rounded-lg group-hover:bg-purple-500/10 transition">
+                            <svg class="w-6 h-6 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white group-hover:text-purple-500 transition">Twitch</h3>
+                            <p class="text-sm text-gray-500">Прямые трансляции</p>
+                        </div>
+                    </div>
+                </a>
+
             </div>
         </section>
 
@@ -250,6 +391,8 @@
             const youtubeChat = document.getElementById('youtubeChat');
             const ytChatContent = document.getElementById('ytChatContent');
             
+            const streamContent = document.getElementById('streamContent');
+            const gamesContent = document.getElementById('gamesContent');
             const videosSection = document.getElementById('videosSection');
             const videosGrid = document.getElementById('videosGrid');
 
@@ -422,6 +565,8 @@
 
                     if (platform === 'twitch') {
                         // Показываем Twitch элементы
+                        streamContent.classList.remove('hidden');
+                        gamesContent.classList.add('hidden');
                         twitchEmbed.classList.remove('hidden');
                         twitchChat.classList.remove('hidden');
                         youtubeEmbed.classList.add('hidden');
@@ -431,8 +576,10 @@
                         // Запрашиваем данные для Twitch
                         fetchTwitchData(); 
 
-                    } else {
+                    } else if (platform === 'youtube') {
                         // Показываем YouTube элементы
+                        streamContent.classList.remove('hidden');
+                        gamesContent.classList.add('hidden');
                         twitchEmbed.classList.add('hidden');
                         twitchChat.classList.add('hidden');
                         youtubeEmbed.classList.remove('hidden');
@@ -441,11 +588,45 @@
                         
                         // Запрашиваем данные для YouTube
                         fetchYoutubeData();
+                    } else if (platform === 'games') {
+                        // Показываем игры
+                        streamContent.classList.add('hidden');
+                        gamesContent.classList.remove('hidden');
+                        videosSection.classList.add('hidden');
+                        
+                        // Сбрасываем статус
+                        statusDot.className = "w-2 h-2 rounded-full bg-gray-500";
+                        statusText.textContent = "ИГРЫ";
+                        statusText.style.color = "#888";
+                        streamTitle.textContent = "Мои проекты";
+                        streamTitle.classList.remove('skeleton');
+                        streamGame.textContent = "—";
+                        streamViewers.textContent = "—";
                     }
                 });
             });
 
         })();
+
+        // Функция копирования IP
+        function copyIP() {
+            const ip = 'maxsusyaev.aternos.me';
+            navigator.clipboard.writeText(ip).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const btnText = document.getElementById('copyBtnText');
+                
+                btn.classList.add('copied');
+                btnText.textContent = 'Скопировано!';
+                
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btnText.textContent = 'Скопировать IP';
+                }, 2000);
+            }).catch(err => {
+                console.error('Ошибка копирования:', err);
+                alert('IP: ' + ip);
+            });
+        }
     </script>
 </body>
 </html>
