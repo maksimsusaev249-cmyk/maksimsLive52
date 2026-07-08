@@ -52,6 +52,12 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(112, 0, 255, 0.2);
         }
 
+        @media (max-width: 768px) {
+            .glass-card:hover {
+                transform: translateY(-4px) scale(1.01);
+            }
+        }
+
         .tab-btn {
             position: relative;
             transition: all 0.3s;
@@ -76,6 +82,9 @@
         .tab-btn.active::after {
             width: 80%;
         }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .social-btn {
             position: relative;
@@ -111,12 +120,33 @@
 
         .fade-in-up { animation: fadeInUp 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 1024px) {
+            .stream-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .stream-player {
+                height: 240px !important;
+            }
+            .stream-chat {
+                height: 400px !important;
+            }
+        }
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .stream-player {
+                height: 320px !important;
+            }
+            .stream-chat {
+                height: 450px !important;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <div class="bg-grid"></div>
 
+    <!-- Плавающая кнопка доната -->
     <a href="https://www.donationalerts.com/r/maksimLive007" target="_blank" 
        class="fixed bottom-6 left-6 z-50 group">
         <div class="relative">
@@ -129,72 +159,72 @@
     </a>
 
     <header class="sticky top-0 z-40 border-b border-white/5 bg-[#050505]/80 backdrop-blur-xl">
-        <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div class="container mx-auto px-3 sm:px-4 h-16 sm:h-20 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-[#FF0055] to-[#7000FF] rounded-lg flex items-center justify-center font-black text-xl shadow-lg group-hover:rotate-12 transition">M</div>
-                <span class="font-bold text-2xl tracking-tight">MAKSIM<span class="text-[#FF0055]">LIVE</span></span>
+                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-[#FF0055] to-[#7000FF] rounded-lg flex items-center justify-center font-black text-lg sm:text-xl shadow-lg group-hover:rotate-12 transition">M</div>
+                <span class="font-bold text-xl sm:text-2xl tracking-tight">MAKSIM<span class="text-[#FF0055]">LIVE</span></span>
             </a>
             
-            <div id="liveBadgeNav" class="hidden md:flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-                <span class="w-2.5 h-2.5 rounded-full bg-gray-600 live-dot" id="navDot"></span>
-                <span class="text-xs font-bold uppercase tracking-widest text-gray-400" id="navText">OFFLINE</span>
+            <div id="liveBadgeNav" class="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+                <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-gray-600 live-dot" id="navDot"></span>
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-400" id="navText">OFFLINE</span>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+    <main class="flex-grow container mx-auto px-3 sm:px-4 py-5 sm:py-8 max-w-6xl">
         
-        <section class="mb-8 text-center md:text-left fade-in-up">
+        <section class="mb-5 sm:mb-8 text-center md:text-left fade-in-up">
             <div class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
                 <div id="statusDot" class="w-2 h-2 rounded-full bg-gray-600"></div>
                 <span id="statusText" class="text-xs font-bold uppercase tracking-widest text-gray-400">Загрузка...</span>
             </div>
-            <h1 id="streamTitle" class="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 mb-2 leading-tight">
+            <h1 id="streamTitle" class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 mb-2 leading-tight">
                 Добро пожаловать
             </h1>
-            <p class="text-gray-400 text-lg">Категория: <span id="streamGame" class="text-white font-medium">—</span> • <span id="streamViewers" class="text-[#00F0FF]">0</span> зрителей</p>
+            <p class="text-gray-400 text-sm sm:text-lg">Категория: <span id="streamGame" class="text-white font-medium">—</span> • <span id="streamViewers" class="text-[#00F0FF]">0</span> зрителей</p>
         </section>
 
-        <div class="flex justify-center md:justify-start border-b border-white/10 mb-8 overflow-x-auto no-scrollbar">
-            <button class="tab-btn active px-6 py-4 text-lg font-semibold whitespace-nowrap" data-platform="home">🏠 Главная</button>
-            <button class="tab-btn px-6 py-4 text-lg font-semibold whitespace-nowrap" data-platform="games">🎮 Игры & Проекты</button>
-            <button class="tab-btn px-6 py-4 text-lg font-semibold whitespace-nowrap" data-platform="social">🌐 Сообщество</button>
+        <div class="flex justify-center md:justify-start border-b border-white/10 mb-5 sm:mb-8 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
+            <button class="tab-btn active px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="home">🏠 Главная</button>
+            <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="games">🎮 Игры & Проекты</button>
+            <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="social">🌐 Сообщество</button>
         </div>
 
         <div id="home-content" class="tab-content block fade-in-up">
-            <div class="grid lg:grid-cols-3 gap-6 h-[600px] lg:h-[700px]">
-                <div class="lg:col-span-2 glass-card rounded-2xl overflow-hidden relative bg-black group">
-                    <div id="localWarning" class="absolute inset-0 z-20 bg-[#0a0a0a] flex flex-col items-center justify-center text-center p-6 hidden">
-                        <h3 class="text-2xl font-bold text-[#FF0055] mb-2">⚠️ Внимание</h3>
-                        <p class="text-gray-400">Для работы стрима откройте сайт через Local Server (VS Code Live Server).</p>
+            <div class="stream-grid grid lg:grid-cols-3 gap-4 sm:gap-6">
+                <div class="lg:col-span-2 glass-card rounded-2xl overflow-hidden relative bg-black group stream-player h-[240px] sm:h-[320px] lg:h-[700px]">
+                    <div id="localWarning" class="absolute inset-0 z-20 bg-[#0a0a0a] flex flex-col items-center justify-center text-center p-4 sm:p-6 hidden">
+                        <h3 class="text-xl sm:text-2xl font-bold text-[#FF0055] mb-2">⚠️ Внимание</h3>
+                        <p class="text-gray-400 text-sm sm:text-base">Для работы стрима откройте сайт через Local Server (VS Code Live Server).</p>
                     </div>
                     <iframe id="twitchPlayer" class="w-full h-full" src="" allowfullscreen></iframe>
                 </div>
 
-                <div class="lg:col-span-1 glass-card rounded-2xl overflow-hidden relative bg-[#0e0e10]">
+                <div class="lg:col-span-1 glass-card rounded-2xl overflow-hidden relative bg-[#0e0e10] stream-chat h-[400px] sm:h-[450px] lg:h-[700px]">
                     <iframe id="twitchChat" class="w-full h-full" src=""></iframe>
                 </div>
             </div>
         </div>
 
         <div id="games-content" class="tab-content hidden fade-in-up">
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 
-                <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF0055] blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-                    <div class="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 text-3xl">🖱️</div>
-                    <h3 class="text-2xl font-bold mb-2">Кликер</h3>
-                    <p class="text-gray-400 mb-6 text-sm">Мой собственный проект. Кликай, развивайся и ставь рекорды!</p>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">🖱️</div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-2">Кликер</h3>
+                    <p class="text-gray-400 mb-5 sm:mb-6 text-sm">Мой собственный проект. Кликай, развивайся и ставь рекорды!</p>
                     <a href="https://klik-klan-scm6.onrender.com" target="_blank" 
                        class="block w-full py-3 bg-[#FF0055] hover:bg-[#ff3377] text-center rounded-xl font-bold transition shadow-lg shadow-[#FF0055]/20">
                         Играть сейчас
                     </a>
                 </div>
 
-                <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-                    <div class="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 text-3xl">⛏️</div>
-                    <h3 class="text-2xl font-bold mb-2">Minecraft</h3>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">⛏️</div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-2">Minecraft</h3>
                     <p class="text-gray-400 mb-4 text-sm">Хочешь попасть на сервер? Зайди в наш <span class="text-white font-semibold">Telegram-канал</span>, напиши <span class="text-white font-semibold">«добавь меня белый список»</span> и получи доступ!</p>
                     <a href="https://t.me/buildingsinMine" target="_blank" 
                        class="block w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-center rounded-xl font-bold transition shadow-lg shadow-green-500/20">
@@ -202,11 +232,11 @@
                     </a>
                 </div>
 
-                <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group sm:col-span-2 lg:col-span-1">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-                    <div class="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center mb-4 text-3xl">🎯</div>
-                    <h3 class="text-2xl font-bold mb-2">Steam</h3>
-                    <p class="text-gray-400 mb-6 text-sm">Мой профиль, достижения и любимые игры.</p>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">🎯</div>
+                    <h3 class="text-xl sm:text-2xl font-bold mb-2">Steam</h3>
+                    <p class="text-gray-400 mb-5 sm:mb-6 text-sm">Мой профиль, достижения и любимые игры.</p>
                     <a href="https://steamcommunity.com/profiles/76561199128139673/" target="_blank" 
                        class="block w-full py-3 bg-[#1b2838] hover:bg-[#2a475e] text-center rounded-xl font-bold transition border border-white/10">
                         Открыть профиль
@@ -217,75 +247,75 @@
         </div>
 
         <div id="social-content" class="tab-content hidden fade-in-up">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 
-                <a href="https://twitch.tv/maksimLive007" target="_blank" class="social-btn glass-card p-5 rounded-2xl flex items-center gap-4 group hover:border-purple-500/50">
-                    <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+                <a href="https://twitch.tv/maksimLive007" target="_blank" class="social-btn glass-card p-4 sm:p-5 rounded-2xl flex items-center gap-3 sm:gap-4 group hover:border-purple-500/50">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-lg group-hover:text-purple-400 transition">Twitch</h3>
-                        <p class="text-xs text-gray-400">Прямые эфиры</p>
-                    </div>
-                </a>
-
-                <a href="https://www.youtube.com/channel/UCEBTFu4B4NevkLbk1Y5QT5w" target="_blank" class="social-btn glass-card p-5 rounded-2xl flex items-center gap-4 group hover:border-red-500/50">
-                    <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 group-hover:bg-red-500 group-hover:text-white transition">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg group-hover:text-red-400 transition">YouTube</h3>
-                        <p class="text-xs text-gray-400">Видео и нарезки</p>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-base sm:text-lg group-hover:text-purple-400 transition">Twitch</h3>
+                        <p class="text-xs text-gray-400 truncate">Прямые эфиры</p>
                     </div>
                 </a>
 
-                <a href="https://t.me/maksimLive007_twitch" target="_blank" class="social-btn glass-card p-5 rounded-2xl flex items-center gap-4 group hover:border-sky-500/50">
-                    <div class="w-12 h-12 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                <a href="https://www.youtube.com/channel/UCEBTFu4B4NevkLbk1Y5QT5w" target="_blank" class="social-btn glass-card p-4 sm:p-5 rounded-2xl flex items-center gap-3 sm:gap-4 group hover:border-red-500/50">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 group-hover:bg-red-500 group-hover:text-white transition shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-lg group-hover:text-sky-400 transition">Telegram</h3>
-                        <p class="text-xs text-gray-400">Канал и новости</p>
-                    </div>
-                </a>
-
-                <a href="https://vk.ru/maksimLive007" target="_blank" class="social-btn glass-card p-5 rounded-2xl flex items-center gap-4 group hover:border-blue-500/50">
-                    <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.69 17.123h-1.744c-.66 0-.862-.523-2.049-1.714-1.033-1.033-1.49-1.171-1.744-1.171-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4 8.673 4 8.231c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.049.17.491-.085.745-.576.745z"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg group-hover:text-blue-400 transition">VKontakte</h3>
-                        <p class="text-xs text-gray-400">Новости и посты</p>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-base sm:text-lg group-hover:text-red-400 transition">YouTube</h3>
+                        <p class="text-xs text-gray-400 truncate">Видео и нарезки</p>
                     </div>
                 </a>
 
-                <a href="https://max.ru/join/imRSCYkegJa-ro_OYhN-uCql-_LpPRJs41pgTK9VOSs" target="_blank" class="social-btn glass-card p-5 rounded-2xl flex items-center gap-4 group hover:border-orange-500/50">
-                    <div class="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition">
-                        <span class="font-bold text-lg">MAX</span>
+                <a href="https://t.me/maksimLive007_twitch" target="_blank" class="social-btn glass-card p-4 sm:p-5 rounded-2xl flex items-center gap-3 sm:gap-4 group hover:border-sky-500/50">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-lg group-hover:text-orange-400 transition">MAX.RU</h3>
-                        <p class="text-xs text-gray-400">Эксклюзивный контент</p>
-                    </div>
-                </a>
-
-                <a href="https://www.tiktok.com/@maksimlive007_twitch?_r=1&_t=ZS-97rGbAqNz6O" target="_blank" class="social-btn glass-card p-5 rounded-2xl flex items-center gap-4 group hover:border-pink-500/50">
-                    <div class="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg group-hover:text-pink-400 transition">TikTok</h3>
-                        <p class="text-xs text-gray-400">Короткие видео</p>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-base sm:text-lg group-hover:text-sky-400 transition">Telegram</h3>
+                        <p class="text-xs text-gray-400 truncate">Канал и новости</p>
                     </div>
                 </a>
 
-                <a href="https://www.donationalerts.com/r/maksimLive007" target="_blank" class="social-btn glass-card p-5 rounded-2xl flex items-center gap-4 group hover:border-[#FF0055]/50">
-                    <div class="w-12 h-12 rounded-full bg-[#FF0055]/20 flex items-center justify-center text-[#FF0055] group-hover:bg-[#FF0055] group-hover:text-white transition">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <a href="https://vk.ru/maksimLive007" target="_blank" class="social-btn glass-card p-4 sm:p-5 rounded-2xl flex items-center gap-3 sm:gap-4 group hover:border-blue-500/50">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.69 17.123h-1.744c-.66 0-.862-.523-2.049-1.714-1.033-1.033-1.49-1.171-1.744-1.171-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4 8.673 4 8.231c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.049.17.491-.085.745-.576.745z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-lg group-hover:text-[#FF0055] transition">DonationAlerts</h3>
-                        <p class="text-xs text-gray-400">Поддержать автора</p>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-base sm:text-lg group-hover:text-blue-400 transition">VKontakte</h3>
+                        <p class="text-xs text-gray-400 truncate">Новости и посты</p>
+                    </div>
+                </a>
+
+                <a href="https://max.ru/join/imRSCYkegJa-ro_OYhN-uCql-_LpPRJs41pgTK9VOSs" target="_blank" class="social-btn glass-card p-4 sm:p-5 rounded-2xl flex items-center gap-3 sm:gap-4 group hover:border-orange-500/50">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition shrink-0">
+                        <span class="font-bold text-sm sm:text-lg">MAX</span>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-base sm:text-lg group-hover:text-orange-400 transition">MAX.RU</h3>
+                        <p class="text-xs text-gray-400 truncate">Эксклюзивный контент</p>
+                    </div>
+                </a>
+
+                <a href="https://www.tiktok.com/@maksimlive007_twitch?_r=1&_t=ZS-97rGbAqNz6O" target="_blank" class="social-btn glass-card p-4 sm:p-5 rounded-2xl flex items-center gap-3 sm:gap-4 group hover:border-pink-500/50">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-base sm:text-lg group-hover:text-pink-400 transition">TikTok</h3>
+                        <p class="text-xs text-gray-400 truncate">Короткие видео</p>
+                    </div>
+                </a>
+
+                <a href="https://www.donationalerts.com/r/maksimLive007" target="_blank" class="social-btn glass-card p-4 sm:p-5 rounded-2xl flex items-center gap-3 sm:gap-4 group hover:border-[#FF0055]/50 sm:col-span-2 lg:col-span-1">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#FF0055]/20 flex items-center justify-center text-[#FF0055] group-hover:bg-[#FF0055] group-hover:text-white transition shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-base sm:text-lg group-hover:text-[#FF0055] transition">DonationAlerts</h3>
+                        <p class="text-xs text-gray-400 truncate">Поддержать автора</p>
                     </div>
                 </a>
 
@@ -294,9 +324,9 @@
 
     </main>
 
-    <footer class="border-t border-white/5 py-8 mt-auto bg-black/20">
+    <footer class="border-t border-white/5 py-6 sm:py-8 mt-auto bg-black/20">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-500 text-sm">© 2026 MaksimLive. Created with ❤️ for community.</p>
+            <p class="text-gray-500 text-xs sm:text-sm">© 2026 MaksimLive. Created with ❤️ for community.</p>
         </div>
     </footer>
 
