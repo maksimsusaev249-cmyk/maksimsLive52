@@ -132,13 +132,6 @@
             box-shadow: 0 4px 15px rgba(255, 0, 85, 0.3);
         }
 
-        .video-card {
-            transition: all 0.4s;
-        }
-        .video-card.hidden-video {
-            display: none !important;
-        }
-
         .service-badge {
             display: inline-block;
             font-size: 0.65rem;
@@ -150,7 +143,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Стили для поиска */
         .search-input {
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -246,7 +238,6 @@
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="search">🔍 Поиск</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="games">🎮 Игры</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="services">🛠️ Услуги</button>
-            <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="videos">🎬 Видео</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="social">🌐 Сообщество</button>
         </div>
 
@@ -386,7 +377,7 @@
             <!-- ФОТОСЕССИИ -->
             <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
                 <span class="w-1 h-6 bg-gradient-to-b from-pink-500 to-purple-500 rounded-full"></span>
-                 Фотосессии
+                📸 Фотосессии
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
                 
@@ -416,7 +407,7 @@
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-blue-500/20 text-blue-300">Репортаж</span>
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl"></div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">🎥</div>
                     <h3 class="text-xl sm:text-2xl font-bold mb-2">Репортажная</h3>
                     <p class="text-gray-400 mb-4 text-sm">Съемка мероприятий, концертов, стримов. Живые эмоции и атмосфера события.</p>
                     <ul class="text-sm text-gray-400 mb-4 space-y-1">
@@ -527,7 +518,7 @@
             <!-- ДРУГИЕ УСЛУГИ -->
             <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
                 <span class="w-1 h-6 bg-gradient-to-b from-[#FF0055] to-[#00F0FF] rounded-full"></span>
-                 Другие услуги
+                🎬 Другие услуги
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 
@@ -617,116 +608,6 @@
                        class="block w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-center rounded-xl font-bold transition shadow-lg shadow-yellow-500/20">
                         Заказать ВКонтакте
                     </a>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ВИДЕО -->
-        <div id="videos-content" class="tab-content hidden fade-in-up">
-            <div class="mb-6">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-2">Мои видео</h2>
-                <p class="text-gray-400 text-sm sm:text-base mb-4">Смотри контент на разных платформах</p>
-                
-                <div class="flex flex-wrap gap-2">
-                    <button class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" data-filter="all"> Все</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="youtube">▶️ YouTube</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="tiktok">🎵 TikTok</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="instagram"> Instagram</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="twitch"> Twitch</button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="videos-grid">
-                
-                <div class="video-card glass-card rounded-2xl overflow-hidden group" data-platform="youtube">
-                    <div class="relative h-40 bg-gradient-to-br from-red-500/30 to-red-700/30 flex items-center justify-center">
-                        <div class="text-5xl">▶️</div>
-                        <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">YouTube</div>
-                        <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">12:34</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-red-400 transition">Лучшие моменты стрима #1</h3>
-                        <p class="text-gray-400 text-sm mb-3">Нарезка самых смешных моментов с последнего стрима</p>
-                        <a href="#" target="_blank" class="block w-full py-2 bg-red-500/20 hover:bg-red-500 text-center rounded-lg font-semibold transition text-sm">
-                            Смотреть
-                        </a>
-                    </div>
-                </div>
-
-                <div class="video-card glass-card rounded-2xl overflow-hidden group" data-platform="tiktok">
-                    <div class="relative h-40 bg-gradient-to-br from-pink-500/30 to-purple-700/30 flex items-center justify-center">
-                        <div class="text-5xl">🎵</div>
-                        <div class="absolute top-3 left-3 bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded">TikTok</div>
-                        <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">0:45</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-pink-400 transition">Смешной момент на стриме</h3>
-                        <p class="text-gray-400 text-sm mb-3">Короткое видео с реакцией на донат</p>
-                        <a href="#" target="_blank" class="block w-full py-2 bg-pink-500/20 hover:bg-pink-500 text-center rounded-lg font-semibold transition text-sm">
-                            Смотреть
-                        </a>
-                    </div>
-                </div>
-
-                <div class="video-card glass-card rounded-2xl overflow-hidden group" data-platform="youtube">
-                    <div class="relative h-40 bg-gradient-to-br from-red-500/30 to-red-700/30 flex items-center justify-center">
-                        <div class="text-5xl">▶️</div>
-                        <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">YouTube</div>
-                        <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">25:10</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-red-400 transition">Обзор новой игры</h3>
-                        <p class="text-gray-400 text-sm mb-3">Полный обзор геймплея и графики</p>
-                        <a href="#" target="_blank" class="block w-full py-2 bg-red-500/20 hover:bg-red-500 text-center rounded-lg font-semibold transition text-sm">
-                            Смотреть
-                        </a>
-                    </div>
-                </div>
-
-                <div class="video-card glass-card rounded-2xl overflow-hidden group" data-platform="instagram">
-                    <div class="relative h-40 bg-gradient-to-br from-purple-500/30 via-pink-500/30 to-orange-500/30 flex items-center justify-center">
-                        <div class="text-5xl">📸</div>
-                        <div class="absolute top-3 left-3 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded">Instagram</div>
-                        <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">0:58</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-pink-400 transition">Reels: Закулисье стрима</h3>
-                        <p class="text-gray-400 text-sm mb-3">Как я готовлюсь к эфиру</p>
-                        <a href="#" target="_blank" class="block w-full py-2 bg-pink-500/20 hover:bg-pink-500 text-center rounded-lg font-semibold transition text-sm">
-                            Смотреть
-                        </a>
-                    </div>
-                </div>
-
-                <div class="video-card glass-card rounded-2xl overflow-hidden group" data-platform="twitch">
-                    <div class="relative h-40 bg-gradient-to-br from-purple-500/30 to-purple-900/30 flex items-center justify-center">
-                        <div class="text-5xl">📺</div>
-                        <div class="absolute top-3 left-3 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">Twitch</div>
-                        <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">2:15:00</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-purple-400 transition">Полный стрим: Прохождение</h3>
-                        <p class="text-gray-400 text-sm mb-3">Запись полного эфира с чатом</p>
-                        <a href="#" target="_blank" class="block w-full py-2 bg-purple-500/20 hover:bg-purple-500 text-center rounded-lg font-semibold transition text-sm">
-                            Смотреть
-                        </a>
-                    </div>
-                </div>
-
-                <div class="video-card glass-card rounded-2xl overflow-hidden group" data-platform="tiktok">
-                    <div class="relative h-40 bg-gradient-to-br from-pink-500/30 to-purple-700/30 flex items-center justify-center">
-                        <div class="text-5xl">🎵</div>
-                        <div class="absolute top-3 left-3 bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded">TikTok</div>
-                        <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">0:30</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-pink-400 transition">Трендовый ролик</h3>
-                        <p class="text-gray-400 text-sm mb-3">Участвую в челлендже</p>
-                        <a href="#" target="_blank" class="block w-full py-2 bg-pink-500/20 hover:bg-pink-500 text-center rounded-lg font-semibold transition text-sm">
-                            Смотреть
-                        </a>
-                    </div>
                 </div>
 
             </div>
@@ -911,7 +792,6 @@
             try {
                 searchResultsData = [];
 
-                // Поиск по выбранным платформам
                 if (selectedPlatforms.includes('youtube')) {
                     const youtubeResults = await searchYouTube(query);
                     searchResultsData.push(...youtubeResults);
@@ -937,7 +817,6 @@
                     searchResultsData.push(...tiktokResults);
                 }
 
-                // Сортировка по релевантности/дате
                 searchResultsData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
                 renderSearchResults(searchResultsData);
@@ -945,7 +824,7 @@
 
             } catch (error) {
                 console.error('Search error:', error);
-                results.innerHTML = '<div class="text-center py-12 text-red-400"><div class="text-4xl mb-3"></div><p>Ошибка при поиске. Попробуйте позже.</p></div>';
+                results.innerHTML = '<div class="text-center py-12 text-red-400"><div class="text-4xl mb-3">⚠️</div><p>Ошибка при поиске. Попробуйте позже.</p></div>';
             } finally {
                 loading.classList.add('hidden');
             }
@@ -976,7 +855,6 @@
         }
 
         async function searchVK(query) {
-            // Mock данные для VK (в реальности нужен VK API)
             return [
                 {
                     title: 'Новая фотосессия в студии',
@@ -992,7 +870,6 @@
         }
 
         async function searchTelegram(query) {
-            // Mock данные для Telegram
             return [
                 {
                     title: 'Анонс стрима',
@@ -1008,7 +885,6 @@
         }
 
         async function searchTwitch(query) {
-            // Поиск по стримам (mock)
             return [
                 {
                     title: 'Minecraft стрим',
@@ -1024,7 +900,6 @@
         }
 
         async function searchTikTok(query) {
-            // Mock данные для TikTok
             return [
                 {
                     title: 'Смешной момент',
@@ -1048,7 +923,6 @@
                 return;
             }
 
-            // Показываем количество результатов
             const countDiv = document.createElement('div');
             countDiv.className = 'mb-4 text-sm text-gray-400';
             countDiv.textContent = `Найдено: ${results.length} результат(ов)`;
@@ -1065,7 +939,7 @@
                     vk: '<span class="platform-badge bg-blue-500/20 text-blue-300">💙 VK</span>',
                     telegram: '<span class="platform-badge bg-sky-500/20 text-sky-300">✈️ Telegram</span>',
                     twitch: '<span class="platform-badge bg-purple-500/20 text-purple-300">📺 Twitch</span>',
-                    tiktok: '<span class="platform-badge bg-pink-500/20 text-pink-300"> TikTok</span>'
+                    tiktok: '<span class="platform-badge bg-pink-500/20 text-pink-300">🎵 TikTok</span>'
                 };
 
                 card.innerHTML = `
@@ -1125,27 +999,6 @@
             if (e.key === 'Enter') {
                 performSearch();
             }
-        });
-
-        // Фильтр видео
-        const filterBtns = document.querySelectorAll('.filter-btn[data-filter]');
-        const videoCards = document.querySelectorAll('.video-card');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const filter = btn.dataset.filter;
-                
-                videoCards.forEach(card => {
-                    if (filter === 'all' || card.dataset.platform === filter) {
-                        card.classList.remove('hidden-video');
-                    } else {
-                        card.classList.add('hidden-video');
-                    }
-                });
-            });
         });
 
         async function fetchTwitchData() {
