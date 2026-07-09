@@ -150,24 +150,32 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Стили для ленты контента */
-        .feed-item {
-            animation: slideIn 0.5s ease-out;
+        /* Стили для поиска */
+        .search-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
+            outline: none;
+        }
+
+        .platform-checkbox {
+            transition: all 0.3s;
+        }
+        .platform-checkbox.checked {
+            background: linear-gradient(90deg, #FF0055, #7000FF);
+            border-color: transparent;
+        }
+
+        .result-item {
+            animation: slideIn 0.4s ease-out;
         }
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .platform-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
         }
 
         @media (max-width: 1024px) {
@@ -235,7 +243,7 @@
 
         <div class="flex justify-center md:justify-start border-b border-white/10 mb-5 sm:mb-8 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
             <button class="tab-btn active px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="home"> Главная</button>
-            <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="feed"> Лента</button>
+            <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="search">🔍 Поиск</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="games">🎮 Игры</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="services">🛠️ Услуги</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="videos">🎬 Видео</button>
@@ -259,31 +267,72 @@
             </div>
         </div>
 
-        <!-- ЛЕНТА КОНТЕНТА -->
-        <div id="feed-content" class="tab-content hidden fade-in-up">
+        <!-- ПОИСК -->
+        <div id="search-content" class="tab-content hidden fade-in-up">
             <div class="mb-6">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-2">📱 Моя лента</h2>
-                <p class="text-gray-400 text-sm sm:text-base mb-4">Все мои публикации из социальных сетей в одном месте</p>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-2">🔍 Глобальный поиск</h2>
+                <p class="text-gray-400 text-sm sm:text-base mb-6">Ищи контент на всех моих платформах одновременно</p>
                 
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <button class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" data-feed-filter="all">🔥 Всё</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-feed-filter="youtube">▶️ YouTube</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-feed-filter="vk">💙 VK</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-feed-filter="telegram">️ Telegram</button>
+                <!-- Поле поиска -->
+                <div class="relative mb-6">
+                    <input type="text" id="searchInput" placeholder="Что ищем? (например: Minecraft, стрим, обзор...)" 
+                           class="search-input w-full px-6 py-4 rounded-2xl text-white placeholder-gray-500 text-lg">
+                    <button onclick="performSearch()" 
+                            class="absolute right-3 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-[#FF0055] to-[#7000FF] rounded-xl font-bold hover:scale-105 transition">
+                        Найти
+                    </button>
+                </div>
+
+                <!-- Выбор платформ -->
+                <div class="mb-6">
+                    <p class="text-sm text-gray-400 mb-3">Выберите платформы для поиска:</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="platform-checkbox checked px-4 py-2 rounded-xl border border-white/20 flex items-center gap-2" data-platform-filter="youtube" onclick="togglePlatform(this)">
+                            <span class="text-red-400">▶️</span>
+                            <span>YouTube</span>
+                        </button>
+                        <button class="platform-checkbox checked px-4 py-2 rounded-xl border border-white/20 flex items-center gap-2" data-platform-filter="vk" onclick="togglePlatform(this)">
+                            <span class="text-blue-400">💙</span>
+                            <span>VK</span>
+                        </button>
+                        <button class="platform-checkbox checked px-4 py-2 rounded-xl border border-white/20 flex items-center gap-2" data-platform-filter="telegram" onclick="togglePlatform(this)">
+                            <span class="text-sky-400">✈️</span>
+                            <span>Telegram</span>
+                        </button>
+                        <button class="platform-checkbox checked px-4 py-2 rounded-xl border border-white/20 flex items-center gap-2" data-platform-filter="twitch" onclick="togglePlatform(this)">
+                            <span class="text-purple-400">📺</span>
+                            <span>Twitch</span>
+                        </button>
+                        <button class="platform-checkbox checked px-4 py-2 rounded-xl border border-white/20 flex items-center gap-2" data-platform-filter="tiktok" onclick="togglePlatform(this)">
+                            <span class="text-pink-400">🎵</span>
+                            <span>TikTok</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Фильтры результатов -->
+                <div class="flex flex-wrap gap-2 mb-6" id="resultFilters" style="display: none;">
+                    <button class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="all">🔥 Все</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="youtube">▶️ YouTube</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="vk">💙 VK</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="telegram">✈️ Telegram</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="twitch">📺 Twitch</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="tiktok">🎵 TikTok</button>
                 </div>
             </div>
 
-            <div id="feed-container" class="space-y-4">
+            <!-- Результаты поиска -->
+            <div id="searchResults" class="space-y-4">
                 <div class="text-center py-12 text-gray-400">
-                    <div class="text-4xl mb-3">⏳</div>
-                    <p>Загрузка ленты...</p>
+                    <div class="text-6xl mb-4">🔍</div>
+                    <p class="text-lg">Введите запрос для поиска по всем платформам</p>
                 </div>
             </div>
 
-            <div class="mt-6 text-center">
-                <button id="load-more-feed" class="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl font-semibold transition">
-                    Загрузить ещё
-                </button>
+            <!-- Загрузка -->
+            <div id="searchLoading" class="hidden text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#FF0055] border-t-transparent"></div>
+                <p class="mt-4 text-gray-400">Ищу...</p>
             </div>
         </div>
 
@@ -337,7 +386,7 @@
             <!-- ФОТОСЕССИИ -->
             <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
                 <span class="w-1 h-6 bg-gradient-to-b from-pink-500 to-purple-500 rounded-full"></span>
-                📸 Фотосессии
+                 Фотосессии
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
                 
@@ -367,7 +416,7 @@
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-blue-500/20 text-blue-300">Репортаж</span>
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">🎥</div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl"></div>
                     <h3 class="text-xl sm:text-2xl font-bold mb-2">Репортажная</h3>
                     <p class="text-gray-400 mb-4 text-sm">Съемка мероприятий, концертов, стримов. Живые эмоции и атмосфера события.</p>
                     <ul class="text-sm text-gray-400 mb-4 space-y-1">
@@ -583,8 +632,8 @@
                     <button class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" data-filter="all"> Все</button>
                     <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="youtube">▶️ YouTube</button>
                     <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="tiktok">🎵 TikTok</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="instagram">📸 Instagram</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="twitch">📺 Twitch</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="instagram"> Instagram</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-filter="twitch"> Twitch</button>
                 </div>
             </div>
 
@@ -819,130 +868,215 @@
                 btn.classList.add('active');
                 const targetId = btn.dataset.platform + '-content';
                 document.getElementById(targetId).classList.remove('hidden');
-
-                // Загрузка ленты при переходе на вкладку
-                if (btn.dataset.platform === 'feed' && !window.feedLoaded) {
-                    loadFeed();
-                    window.feedLoaded = true;
-                }
             });
         });
 
-        // Загрузка ленты контента
-        async function loadFeed() {
-            const container = document.getElementById('feed-container');
-            container.innerHTML = '<div class="text-center py-12 text-gray-400"><div class="text-4xl mb-3">⏳</div><p>Загрузка ленты...</p></div>';
+        // Глобальный поиск
+        let selectedPlatforms = ['youtube', 'vk', 'telegram', 'twitch', 'tiktok'];
+        let searchResultsData = [];
 
-            try {
-                // YouTube RSS
-                const youtubeFeed = await fetchYouTubeVideos();
-                
-                // VK Posts (через API или виджет)
-                const vkFeed = await fetchVKPosts();
-                
-                // Telegram Posts
-                const telegramFeed = await fetchTelegramPosts();
-
-                // Объединяем и сортируем по дате
-                const allPosts = [
-                    ...youtubeFeed.map(post => ({ ...post, platform: 'youtube' })),
-                    ...vkFeed.map(post => ({ ...post, platform: 'vk' })),
-                    ...telegramFeed.map(post => ({ ...post, platform: 'telegram' }))
-                ].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                renderFeed(allPosts);
-            } catch (error) {
-                console.error('Ошибка загрузки ленты:', error);
-                container.innerHTML = '<div class="text-center py-12 text-gray-400"><div class="text-4xl mb-3">️</div><p>Не удалось загрузить ленту. Попробуйте позже.</p></div>';
+        function togglePlatform(btn) {
+            const platform = btn.dataset.platformFilter;
+            btn.classList.toggle('checked');
+            
+            if (btn.classList.contains('checked')) {
+                if (!selectedPlatforms.includes(platform)) {
+                    selectedPlatforms.push(platform);
+                }
+            } else {
+                selectedPlatforms = selectedPlatforms.filter(p => p !== platform);
             }
         }
 
-        async function fetchYouTubeVideos() {
+        async function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) {
+                alert('Введите поисковый запрос');
+                return;
+            }
+
+            if (selectedPlatforms.length === 0) {
+                alert('Выберите хотя бы одну платформу для поиска');
+                return;
+            }
+
+            const loading = document.getElementById('searchLoading');
+            const results = document.getElementById('searchResults');
+            const filters = document.getElementById('resultFilters');
+            
+            loading.classList.remove('hidden');
+            results.innerHTML = '';
+            filters.style.display = 'none';
+
+            try {
+                searchResultsData = [];
+
+                // Поиск по выбранным платформам
+                if (selectedPlatforms.includes('youtube')) {
+                    const youtubeResults = await searchYouTube(query);
+                    searchResultsData.push(...youtubeResults);
+                }
+
+                if (selectedPlatforms.includes('vk')) {
+                    const vkResults = await searchVK(query);
+                    searchResultsData.push(...vkResults);
+                }
+
+                if (selectedPlatforms.includes('telegram')) {
+                    const telegramResults = await searchTelegram(query);
+                    searchResultsData.push(...telegramResults);
+                }
+
+                if (selectedPlatforms.includes('twitch')) {
+                    const twitchResults = await searchTwitch(query);
+                    searchResultsData.push(...twitchResults);
+                }
+
+                if (selectedPlatforms.includes('tiktok')) {
+                    const tiktokResults = await searchTikTok(query);
+                    searchResultsData.push(...tiktokResults);
+                }
+
+                // Сортировка по релевантности/дате
+                searchResultsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                renderSearchResults(searchResultsData);
+                filters.style.display = 'flex';
+
+            } catch (error) {
+                console.error('Search error:', error);
+                results.innerHTML = '<div class="text-center py-12 text-red-400"><div class="text-4xl mb-3"></div><p>Ошибка при поиске. Попробуйте позже.</p></div>';
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+
+        async function searchYouTube(query) {
             try {
                 const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`;
                 const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
                 const data = await response.json();
                 
-                return data.items.map(item => ({
-                    title: item.title,
-                    description: item.description?.substring(0, 150) + '...' || '',
-                    link: item.link,
-                    thumbnail: item.thumbnail || '',
-                    date: item.pubDate,
-                    platform: 'youtube'
-                }));
+                return data.items
+                    .filter(item => item.title.toLowerCase().includes(query.toLowerCase()))
+                    .map(item => ({
+                        title: item.title,
+                        description: item.description?.substring(0, 200) + '...' || '',
+                        link: item.link,
+                        thumbnail: item.thumbnail || '',
+                        date: item.pubDate,
+                        platform: 'youtube',
+                        platformName: 'YouTube',
+                        platformColor: 'red'
+                    }));
             } catch (error) {
-                console.error('YouTube error:', error);
+                console.error('YouTube search error:', error);
                 return [];
             }
         }
 
-        async function fetchVKPosts() {
-            try {
-                // Используем VK API через proxy или виджет
-                // Для демонстрации создадим mock данные
-                return [
-                    {
-                        title: 'Новое фото с фотосессии 📸',
-                        description: 'Смотрите новые работы из студии! Запись открыта.',
-                        link: 'https://vk.com/club230785877',
-                        thumbnail: '',
-                        date: new Date().toISOString(),
-                        platform: 'vk'
-                    }
-                ];
-            } catch (error) {
-                console.error('VK error:', error);
-                return [];
-            }
+        async function searchVK(query) {
+            // Mock данные для VK (в реальности нужен VK API)
+            return [
+                {
+                    title: 'Новая фотосессия в студии',
+                    description: 'Смотрите свежие работы с последней съемки. Запись открыта!',
+                    link: 'https://vk.com/club230785877',
+                    thumbnail: '',
+                    date: new Date().toISOString(),
+                    platform: 'vk',
+                    platformName: 'VK',
+                    platformColor: 'blue'
+                }
+            ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.description.toLowerCase().includes(query.toLowerCase()));
         }
 
-        async function fetchTelegramPosts() {
-            try {
-                // Telegram канал через RSS или API
-                return [];
-            } catch (error) {
-                console.error('Telegram error:', error);
-                return [];
-            }
+        async function searchTelegram(query) {
+            // Mock данные для Telegram
+            return [
+                {
+                    title: 'Анонс стрима',
+                    description: 'Сегодня в 20:00 стрим! Не пропустите.',
+                    link: 'https://t.me/maksimLive007_twitch',
+                    thumbnail: '',
+                    date: new Date().toISOString(),
+                    platform: 'telegram',
+                    platformName: 'Telegram',
+                    platformColor: 'sky'
+                }
+            ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.description.toLowerCase().includes(query.toLowerCase()));
         }
 
-        function renderFeed(posts) {
-            const container = document.getElementById('feed-container');
+        async function searchTwitch(query) {
+            // Поиск по стримам (mock)
+            return [
+                {
+                    title: 'Minecraft стрим',
+                    description: 'Строим городок вместе с чатом',
+                    link: `https://twitch.tv/${CHANNEL_NAME}`,
+                    thumbnail: '',
+                    date: new Date().toISOString(),
+                    platform: 'twitch',
+                    platformName: 'Twitch',
+                    platformColor: 'purple'
+                }
+            ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.description.toLowerCase().includes(query.toLowerCase()));
+        }
+
+        async function searchTikTok(query) {
+            // Mock данные для TikTok
+            return [
+                {
+                    title: 'Смешной момент',
+                    description: 'Реакция на донат 😂',
+                    link: 'https://www.tiktok.com/@maksimlive007_twitch',
+                    thumbnail: '',
+                    date: new Date().toISOString(),
+                    platform: 'tiktok',
+                    platformName: 'TikTok',
+                    platformColor: 'pink'
+                }
+            ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.description.toLowerCase().includes(query.toLowerCase()));
+        }
+
+        function renderSearchResults(results) {
+            const container = document.getElementById('searchResults');
             container.innerHTML = '';
 
-            if (posts.length === 0) {
-                container.innerHTML = '<div class="text-center py-12 text-gray-400"><div class="text-4xl mb-3">📭</div><p>Пока нет публикаций</p></div>';
+            if (results.length === 0) {
+                container.innerHTML = '<div class="text-center py-12 text-gray-400"><div class="text-6xl mb-4">🔍</div><p class="text-lg">Ничего не найдено. Попробуйте другой запрос.</p></div>';
                 return;
             }
 
-            posts.forEach((post, index) => {
-                const platformColors = {
-                    youtube: 'from-red-500/20 to-red-700/20 border-red-500/30',
-                    vk: 'from-blue-500/20 to-blue-700/20 border-blue-500/30',
-                    telegram: 'from-sky-500/20 to-sky-700/20 border-sky-500/30'
-                };
+            // Показываем количество результатов
+            const countDiv = document.createElement('div');
+            countDiv.className = 'mb-4 text-sm text-gray-400';
+            countDiv.textContent = `Найдено: ${results.length} результат(ов)`;
+            container.appendChild(countDiv);
+
+            results.forEach((result, index) => {
+                const card = document.createElement('div');
+                card.className = `result-item glass-card rounded-2xl overflow-hidden border border-${result.platformColor}-500/30`;
+                card.setAttribute('data-result-platform', result.platform);
+                card.style.animationDelay = `${index * 0.05}s`;
 
                 const platformBadges = {
                     youtube: '<span class="platform-badge bg-red-500/20 text-red-300">▶️ YouTube</span>',
                     vk: '<span class="platform-badge bg-blue-500/20 text-blue-300">💙 VK</span>',
-                    telegram: '<span class="platform-badge bg-sky-500/20 text-sky-300">✈️ Telegram</span>'
+                    telegram: '<span class="platform-badge bg-sky-500/20 text-sky-300">✈️ Telegram</span>',
+                    twitch: '<span class="platform-badge bg-purple-500/20 text-purple-300">📺 Twitch</span>',
+                    tiktok: '<span class="platform-badge bg-pink-500/20 text-pink-300"> TikTok</span>'
                 };
-
-                const card = document.createElement('div');
-                card.className = `feed-item glass-card rounded-2xl overflow-hidden border ${platformColors[post.platform]}`;
-                card.setAttribute('data-feed-platform', post.platform);
-                card.style.animationDelay = `${index * 0.1}s`;
 
                 card.innerHTML = `
                     <div class="p-5 sm:p-6">
                         <div class="flex items-start justify-between mb-3">
-                            ${platformBadges[post.platform]}
-                            <span class="text-xs text-gray-500">${formatDate(post.date)}</span>
+                            ${platformBadges[result.platform]}
+                            <span class="text-xs text-gray-500">${formatDate(result.date)}</span>
                         </div>
-                        <h3 class="text-lg sm:text-xl font-bold mb-2">${post.title}</h3>
-                        <p class="text-gray-400 text-sm mb-4">${post.description}</p>
-                        <a href="${post.link}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg font-semibold transition text-sm">
+                        <h3 class="text-lg sm:text-xl font-bold mb-2">${result.title}</h3>
+                        <p class="text-gray-400 text-sm mb-4">${result.description}</p>
+                        <a href="${result.link}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg font-semibold transition text-sm">
                             Смотреть
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         </a>
@@ -952,6 +1086,23 @@
                 container.appendChild(card);
             });
         }
+
+        // Фильтр результатов поиска
+        document.querySelectorAll('[data-result-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-result-filter]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filter = btn.dataset.resultFilter;
+                document.querySelectorAll('.result-item').forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-result-platform') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
 
         function formatDate(dateString) {
             const date = new Date(dateString);
@@ -969,21 +1120,11 @@
             return date.toLocaleDateString('ru-RU');
         }
 
-        // Фильтр ленты
-        document.querySelectorAll('[data-feed-filter]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('[data-feed-filter]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const filter = btn.dataset.feedFilter;
-                document.querySelectorAll('.feed-item').forEach(item => {
-                    if (filter === 'all' || item.getAttribute('data-feed-platform') === filter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
+        // Enter для поиска
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
         });
 
         // Фильтр видео
