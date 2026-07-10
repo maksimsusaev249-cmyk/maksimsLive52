@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MaksimLive | Официальный сайт</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
@@ -14,6 +14,14 @@
             --bg-dark: #050505;
         }
 
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-dark);
@@ -22,6 +30,7 @@
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(255, 0, 85, 0.15) 0%, transparent 40%);
+            -webkit-overflow-scrolling: touch;
         }
 
         .bg-grid {
@@ -58,6 +67,8 @@
             position: relative;
             transition: all 0.3s;
             color: #888;
+            -webkit-user-select: none;
+            user-select: none;
         }
         .tab-btn::after {
             content: '';
@@ -79,8 +90,29 @@
             width: 80%;
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Плавная прокрутка табов на мобильных */
+        .tabs-scroll {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            overscroll-behavior-x: contain;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+        }
+        
+        .tabs-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tabs-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .tab-btn {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
 
         .social-btn {
             position: relative;
@@ -121,6 +153,8 @@
             transition: all 0.3s;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
+            -webkit-user-select: none;
+            user-select: none;
         }
         .filter-btn:hover {
             background: rgba(255,255,255,0.1);
@@ -156,6 +190,8 @@
 
         .platform-checkbox {
             transition: all 0.3s;
+            -webkit-user-select: none;
+            user-select: none;
         }
         .platform-checkbox.checked {
             background: linear-gradient(90deg, #FF0055, #7000FF);
@@ -170,7 +206,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Рамка для видео плеера */
         .video-frame {
             border: 2px solid rgba(255, 0, 85, 0.3);
             border-radius: 1rem;
@@ -195,6 +230,18 @@
             }
             .stream-chat {
                 height: 450px !important;
+            }
+        }
+
+        /* Предотвращение "прыжков" при скролле на iOS */
+        @media (max-width: 768px) {
+            body {
+                position: relative;
+            }
+            
+            /* Плавный скролл для всего контента */
+            main {
+                -webkit-overflow-scrolling: touch;
             }
         }
     </style>
@@ -241,7 +288,8 @@
             <p class="text-gray-400 text-sm sm:text-lg">Категория: <span id="streamGame" class="text-white font-medium">—</span> • <span id="streamViewers" class="text-[#00F0FF]">0</span> зрителей</p>
         </section>
 
-        <div class="flex justify-center md:justify-start border-b border-white/10 mb-5 sm:mb-8 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
+        <!-- Табы с плавной прокруткой -->
+        <div class="tabs-scroll flex justify-center md:justify-start border-b border-white/10 mb-5 sm:mb-8 overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
             <button class="tab-btn active px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="home"> Главная</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="search">🔍 Поиск</button>
             <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="games">🎮 Игры</button>
@@ -272,7 +320,6 @@
                 <h2 class="text-2xl sm:text-3xl font-bold mb-2">🔍 Глобальный поиск</h2>
                 <p class="text-gray-400 text-sm sm:text-base mb-6">Ищи контент на всех моих платформах одновременно</p>
                 
-                <!-- Поле поиска -->
                 <div class="relative mb-6">
                     <input type="text" id="searchInput" placeholder="Что ищем? (например: Minecraft, стрим, обзор...)" 
                            class="search-input w-full px-6 py-4 rounded-2xl text-white placeholder-gray-500 text-lg">
@@ -282,7 +329,6 @@
                     </button>
                 </div>
 
-                <!-- Выбор платформ -->
                 <div class="mb-6">
                     <p class="text-sm text-gray-400 mb-3">Выберите платформы для поиска:</p>
                     <div class="flex flex-wrap gap-3">
@@ -309,18 +355,16 @@
                     </div>
                 </div>
 
-                <!-- Фильтры результатов -->
                 <div class="flex flex-wrap gap-2 mb-6" id="resultFilters" style="display: none;">
                     <button class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="all">🔥 Все</button>
                     <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="youtube">▶️ YouTube</button>
                     <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="vk">💙 VK</button>
                     <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="telegram">✈️ Telegram</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="twitch">📺 Twitch</button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="tiktok">🎵 TikTok</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="twitch"> Twitch</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-semibold" data-result-filter="tiktok"> TikTok</button>
                 </div>
             </div>
 
-            <!-- Результаты поиска -->
             <div id="searchResults" class="space-y-4">
                 <div class="text-center py-12 text-gray-400">
                     <div class="text-6xl mb-4">🔍</div>
@@ -328,7 +372,6 @@
                 </div>
             </div>
 
-            <!-- Загрузка -->
             <div id="searchLoading" class="hidden text-center py-12">
                 <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#FF0055] border-t-transparent"></div>
                 <p class="mt-4 text-gray-400">Ищу...</p>
@@ -382,14 +425,12 @@
                 <p class="text-gray-400 text-sm sm:text-base">Выберите услугу и напишите мне ВКонтакте для заказа</p>
             </div>
 
-            <!-- ФОТОСЕССИИ -->
             <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
                 <span class="w-1 h-6 bg-gradient-to-b from-pink-500 to-purple-500 rounded-full"></span>
                  Фотосессии
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
                 
-                <!-- Репортажная -->
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-blue-500/20 text-blue-300">Репортаж</span>
@@ -411,11 +452,10 @@
                     </a>
                 </div>
 
-                <!-- Индивидуальная -->
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-pink-500/20 text-pink-300">Портрет</span>
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">🌟</div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl"></div>
                     <h3 class="text-xl sm:text-2xl font-bold mb-2">Индивидуальная</h3>
                     <p class="text-gray-400 mb-4 text-sm">Персональная фотосессия на улице или в локации. Портфолио для соцсетей, аватарки.</p>
                     <ul class="text-sm text-gray-400 mb-4 space-y-1">
@@ -433,7 +473,6 @@
                     </a>
                 </div>
 
-                <!-- Контентная -->
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-orange-500/20 text-orange-300">Контент</span>
@@ -455,11 +494,10 @@
                     </a>
                 </div>
 
-                <!-- Парная/Семейная -->
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-green-500/20 text-green-300">Парная</span>
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">👩‍❤️‍👨</div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">💑</div>
                     <h3 class="text-xl sm:text-2xl font-bold mb-2">Парная / Семейная</h3>
                     <p class="text-gray-400 mb-4 text-sm">Съемка для пар, семей, друзей. Теплые и искренние кадры ваших отношений.</p>
                     <ul class="text-sm text-gray-400 mb-4 space-y-1">
@@ -479,18 +517,16 @@
 
             </div>
 
-            <!-- ДРУГИЕ УСЛУГИ -->
             <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
                 <span class="w-1 h-6 bg-gradient-to-b from-[#FF0055] to-[#00F0FF] rounded-full"></span>
                  Другие услуги
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 
-                <!-- Монтаж видео -->
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF0055] blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-[#FF0055]/20 text-red-300">Видео</span>
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl">🎬</div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-2xl sm:text-3xl"></div>
                     <h3 class="text-xl sm:text-2xl font-bold mb-2">Монтаж видео</h3>
                     <p class="text-gray-400 mb-4 text-sm">Монтаж стримов, нарезки, TikTok/Reels. Добавлю эффекты, музыку и субтитры.</p>
                     <ul class="text-sm text-gray-400 mb-4 space-y-1">
@@ -508,7 +544,6 @@
                     </a>
                 </div>
 
-                <!-- Коллаборация -->
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-pink-500/20 text-pink-300">Партнерство</span>
@@ -530,7 +565,6 @@
                     </a>
                 </div>
 
-                <!-- Настройка сервера -->
                 <div class="glass-card p-5 sm:p-6 rounded-2xl relative overflow-hidden group">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
                     <span class="service-badge bg-green-500/20 text-green-300">Техническая</span>
@@ -683,6 +717,7 @@
             setInterval(fetchTwitchData, 60000);
         }
 
+        // Плавное переключение табов с прокруткой к активному
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 tabBtns.forEach(b => b.classList.remove('active'));
@@ -691,6 +726,13 @@
                 btn.classList.add('active');
                 const targetId = btn.dataset.platform + '-content';
                 document.getElementById(targetId).classList.remove('hidden');
+
+                // Плавная прокрутка к активному табу
+                btn.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest',
+                    inline: 'center'
+                });
             });
         });
 
@@ -903,7 +945,6 @@
             });
         }
 
-        // Фильтр результатов поиска
         document.querySelectorAll('[data-result-filter]').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('[data-result-filter]').forEach(b => b.classList.remove('active'));
@@ -936,7 +977,6 @@
             return date.toLocaleDateString('ru-RU');
         }
 
-        // Enter для поиска
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 performSearch();
