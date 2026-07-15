@@ -6,6 +6,11 @@
 <title>MaksimLive | Официальный сайт</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 <style>
 :root{--p:#FF0055;--s:#00F0FF;--a:#7000FF;--bg:#050505}
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
@@ -38,10 +43,10 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 @keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .video-frame{border:2px solid rgba(255,0,85,.3);border-radius:1rem;overflow:hidden;box-shadow:0 0 30px rgba(255,0,85,.2)}
 
+/* ЧАТ */
 .chat-widget{position:fixed;bottom:80px;right:15px;z-index:1000}
-.chat-widget .relative{width:56px;height:56px}
-.chat-window{position:fixed;bottom:0;right:0;left:0;width:100%;height:calc(100vh - 60px);max-height:none;background:rgba(20,20,25,.98);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden;z-index:1000}
-@media(min-width:640px){.chat-window{bottom:80px;right:15px;left:auto;width:380px;height:600px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.5)}}
+.chat-window{position:fixed;bottom:0;right:0;left:0;width:100%;height:calc(100vh - 60px);background:rgba(20,20,25,.98);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:20px 20px 0 0;display:none;flex-direction:column;overflow:hidden;z-index:1000}
+@media(min-width:640px){.chat-window{bottom:80px;right:15px;left:auto;width:380px;height:600px;border-radius:20px}}
 .chat-window.active{display:flex;animation:slideUp .3s ease-out}
 @keyframes slideUp{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
 @media(min-width:640px){@keyframes slideUp{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}}
@@ -62,6 +67,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 .msg-preview img,.msg-preview video{max-width:80px;max-height:80px;border-radius:8px;object-fit:cover}
 .remove-preview{position:absolute;top:-6px;right:-6px;background:#FF0055;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px}
 
+/* МЕНЕДЖЕР */
 .manager-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:2000;display:none;flex-direction:column}
 .manager-panel.active{display:flex}
 .manager-sidebar{width:100%;height:45%;border-right:none;border-bottom:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;overflow:hidden}
@@ -73,6 +79,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 @media(min-width:768px){.manager-sidebar{width:320px;height:100%;border-right:1px solid rgba(255,255,255,.1);border-bottom:none}.manager-main{height:100%}}
 @media(min-width:1024px){.manager-sidebar{width:380px}}
 
+/* МОДАЛКИ */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:3000;display:none;align-items:center;justify-content:center;padding:15px}
 .modal-overlay.active{display:flex}
 .modal{background:rgba(20,20,25,.98);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -92,6 +99,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 .moderator-item{display:flex;align-items:center;gap:8px;padding:10px;background:rgba(255,255,255,.05);border-radius:12px;margin-bottom:8px;flex-wrap:wrap}
 .moderator-item input{flex:1;min-width:80px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px;color:#fff;font-size:13px}
 .moderator-item input:focus{outline:none;border-color:var(--p)}
+
+.online-indicator{display:inline-block;width:8px;height:8px;background:#4caf50;border-radius:50%;margin-right:6px;animation:pulse 2s infinite}
+.offline-indicator{display:inline-block;width:8px;height:8px;background:#666;border-radius:50%;margin-right:6px}
 
 @media(max-width:1024px){.stream-grid{grid-template-columns:1fr!important}.stream-player{height:220px!important}.stream-chat{height:350px!important}}
 @media(min-width:640px) and (max-width:1023px){.stream-player{height:280px!important}.stream-chat{height:400px!important}}
@@ -297,8 +307,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="tabs-scroll flex justify-center md:justify-start border-b border-white/10 mb-4 sm:mb-8 overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
 <button class="tab-btn active px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="home">🏠 Главная</button>
 <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="search">🔍 Поиск</button>
-<button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="games">🎮 Игры</button>
-<button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="services">️ Услуги</button>
+<button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="games"> Игры</button>
+<button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="services">🛠️ Услуги</button>
 <button class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-lg font-semibold whitespace-nowrap" data-platform="social">🌐 Сообщество</button>
 </div>
 
@@ -340,8 +350,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="youtube">▶️ YouTube</button>
 <button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="vk">💙 VK</button>
 <button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="telegram">✈️ Telegram</button>
-<button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="twitch"> Twitch</button>
-<button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="tiktok">🎵 TikTok</button>
+<button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="twitch">📺 Twitch</button>
+<button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="tiktok"> TikTok</button>
 </div>
 </div>
 <div id="searchResults" class="space-y-3 sm:space-y-4">
@@ -354,7 +364,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF0055] blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🖱️</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">️</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Кликер</h3>
 <p class="text-gray-400 mb-3 sm:mb-6 text-xs sm:text-sm">Мой проект. Кликай и ставь рекорды!</p>
 <a href="https://klik-klan-scm6.onrender.com" target="_blank" class="block w-full py-2 sm:py-3 bg-[#FF0055] hover:bg-[#ff3377] text-center rounded-xl font-bold transition shadow-lg shadow-[#FF0055]/20 text-sm sm:text-base">Играть</a>
@@ -368,7 +378,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 </div>
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group sm:col-span-2 lg:col-span-1">
 <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🎯</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Steam</h3>
 <p class="text-gray-400 mb-3 sm:mb-6 text-xs sm:text-sm">Мой профиль и достижения.</p>
 <a href="https://steamcommunity.com/profiles/76561199128139673/" target="_blank" class="block w-full py-2 sm:py-3 bg-[#1b2838] hover:bg-[#2a475e] text-center rounded-xl font-bold transition border border-white/10 text-sm sm:text-base">Открыть</a>
@@ -386,7 +396,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-blue-500/20 text-blue-300">Репортаж</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🎥</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Репортажная</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Съемка мероприятий и стримов.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• До 3 часов</li><li>• 30-50 фото</li><li>• Срочная обработка</li></ul>
@@ -396,7 +406,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-pink-500/20 text-pink-300">Портрет</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🌟</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Индивидуальная</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Персональная фотосессия.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• 1-2 часа</li><li>• 20-30 фото</li><li>• Помощь с локацией</li></ul>
@@ -430,7 +440,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF0055] blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-[#FF0055]/20 text-red-300">Видео</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🎬</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Монтаж видео</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Монтаж стримов, нарезки, TikTok/Reels.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• Нарезки и клипы</li><li>• Эффекты и переходы</li><li>• Субтитры и музыка</li></ul>
@@ -440,7 +450,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-pink-500/20 text-pink-300">Партнерство</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🤝</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Коллаборация</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Совместные стримы и видео.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• Совместные эфиры</li><li>• Видео-коллабы</li><li>• Взаимный пиар</li></ul>
@@ -450,7 +460,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-green-500/20 text-green-300">Техническая</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">️</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">⚙️</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Настройка сервера</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Minecraft, Discord бот, OBS.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• Minecraft / Discord / OBS</li><li>• Плагины и моды</li><li>• Консультация</li></ul>
@@ -524,6 +534,27 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 </footer>
 
 <script>
+// ============================================================
+// 🔥 FIREBASE КОНФИГ - ЗАМЕНИ НА СВОЙ ИЗ ШАГА 3!
+// ============================================================
+const firebaseConfig = {
+  apiKey: "ВСТАВЬ_СЮДА_СВОЙ_API_KEY",
+  authDomain: "ВСТАВЬ_СЮДА.firebaseapp.com",
+  databaseURL: "https://ВСТАВЬ_СЮДА-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "ВСТАВЬ_СЮДА",
+  storageBucket: "ВСТАВЬ_СЮДА.appspot.com",
+  messagingSenderId: "ВСТАВЬ_СЮДА",
+  appId: "ВСТАВЬ_СЮДА"
+};
+
+// Инициализация Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const chatsRef = db.ref('chats');
+
+// ============================================================
+// ОСНОВНОЙ КОД САЙТА
+// ============================================================
 const CHANNEL_NAME='maksimLive007';
 const TWITCH_PROXY_URL='https://api.rss2json.com/utils/twitch/channel/';
 const YOUTUBE_CHANNEL_ID='UCEBTFu4B4NevkLbk1Y5QT5w';
@@ -551,11 +582,10 @@ btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 });
 });
 
+// Настройки хранятся локально (пароль, модераторы, 2FA)
 const DEFAULT_SETTINGS={adminPassword:'1',twoFactorEnabled:false,twoFactorCode:'123456',moderators:[]};
 function getSettings(){try{return JSON.parse(localStorage.getItem('ml_settings'))||DEFAULT_SETTINGS}catch(e){return DEFAULT_SETTINGS}}
 function saveSettings(s){localStorage.setItem('ml_settings',JSON.stringify(s))}
-function getChats(){try{return JSON.parse(localStorage.getItem('ml_chats'))||[]}catch(e){return[]}}
-function saveChats(c){localStorage.setItem('ml_chats',JSON.stringify(c))}
 
 let clientId=localStorage.getItem('ml_clientId')||'client_'+Date.now();
 localStorage.setItem('ml_clientId',clientId);
@@ -566,18 +596,37 @@ let managerSelectedFiles=[];
 let currentChatId=null;
 let currentRole=null;
 let currentModeratorId=null;
+let allChatsCache={}; // Кэш всех чатов из Firebase
 
-window.addEventListener('storage',e=>{
-if(e.key==='ml_chats'){
-if(document.getElementById('chatWindow').classList.contains('active'))loadClientChat();
-if(document.getElementById('managerPanel').classList.contains('active')){
-renderChatList();
-if(currentChatId){const chat=getChats().find(c=>c.id===currentChatId);if(chat)renderManagerMessages(chat.messages)}
-}
-}
-if(e.key==='ml_settings'&&document.getElementById('managerPanel').classList.contains('active'))renderChatList();
+// ============================================================
+// FIREBASE: СЛУШАТЕЛЬ ВСЕХ ЧАТОВ (реальное время)
+// ============================================================
+chatsRef.on('value', (snapshot) => {
+  const data = snapshot.val() || {};
+  allChatsCache = data;
+  
+  // Обновляем интерфейс клиента если открыт чат
+  if(document.getElementById('chatWindow').classList.contains('active')){
+    const chat = allChatsCache[clientId];
+    if(chat){
+      renderClientMessages(chat.messages || []);
+      updateChatStatus(chat);
+      updateClientActions(chat);
+    }
+  }
+  
+  // Обновляем интерфейс менеджера если открыта панель
+  if(document.getElementById('managerPanel').classList.contains('active')){
+    renderChatList(document.getElementById('managerSearch').value);
+    if(currentChatId && allChatsCache[currentChatId]){
+      renderManagerMessages(allChatsCache[currentChatId].messages || []);
+    }
+  }
 });
 
+// ============================================================
+// ЧАТ КЛИЕНТА
+// ============================================================
 function toggleChat(){
 const w=document.getElementById('chatWindow');
 w.classList.toggle('active');
@@ -585,15 +634,27 @@ if(w.classList.contains('active'))loadClientChat();
 }
 
 function loadClientChat(){
-const chats=getChats();
-let chat=chats.find(c=>c.clientId===clientId);
-if(chat&&clientName&&chat.clientName!==clientName){chat.clientName=clientName;saveChats(chats)}
 document.getElementById('nameInputSection').style.display=clientName?'none':'block';
 document.getElementById('clientNameInput').value=clientName;
-if(!chat){chat={id:Date.now(),clientId:clientId,clientName:clientName||'Клиент '+clientId.slice(-6),messages:[],lastMessage:new Date().toISOString(),unread:0,status:'pending',statusText:'Ожидает рассмотрения'};chats.push(chat);saveChats(chats)}
-renderClientMessages(chat.messages);
-updateChatStatus(chat);
-updateClientActions(chat);
+
+const chat = allChatsCache[clientId];
+if(!chat){
+  // Создаем новый чат в Firebase
+  const newChat = {
+    clientId: clientId,
+    clientName: clientName || 'Клиент '+clientId.slice(-6),
+    status: 'pending',
+    statusText: 'Ожидает рассмотрения',
+    lastMessage: new Date().toISOString(),
+    unread: 0,
+    messages: []
+  };
+  chatsRef.child(clientId).set(newChat);
+} else {
+  renderClientMessages(chat.messages || []);
+  updateChatStatus(chat);
+  updateClientActions(chat);
+}
 }
 
 function saveClientName(){
@@ -601,9 +662,12 @@ const name=document.getElementById('clientNameInput').value.trim();
 if(!name){alert('Введите имя');return}
 clientName=name;
 localStorage.setItem('ml_clientName',clientName);
-const chats=getChats();
-chats.forEach(c=>{if(c.clientId===clientId)c.clientName=clientName});
-saveChats(chats);
+
+// Обновляем имя в Firebase
+if(allChatsCache[clientId]){
+  chatsRef.child(clientId+'/clientName').set(clientName);
+}
+
 document.getElementById('nameInputSection').style.display='none';
 loadClientChat();
 }
@@ -625,7 +689,7 @@ else el.innerHTML='';
 function renderClientMessages(messages){
 const container=document.getElementById('chatMessages');
 container.innerHTML='';
-if(messages.length===0){container.innerHTML=`<div class="msg manager"><div>Здравствуйте, ${clientName||'гость'}! 👋 Чем могу помочь?</div><div class="msg-time">Сейчас</div></div>`;return}
+if(!messages || messages.length===0){container.innerHTML=`<div class="msg manager"><div>Здравствуйте, ${clientName||'гость'}! 👋 Чем могу помочь?</div><div class="msg-time">Сейчас</div></div>`;return}
 messages.forEach(msg=>appendClientMessage(msg));
 container.scrollTop=container.scrollHeight;
 }
@@ -639,7 +703,7 @@ if(msg.systemText){div.className='msg system';content=`<div>${msg.systemText}</d
 else{
 if(msg.sender==='manager'&&msg.senderName)content+=`<div class="msg-author">👤 ${msg.senderName}</div>`;
 content+=`<div>${msg.text||''}</div>`;
-if(msg.files&&msg.files.length>0){msg.files.forEach(file=>{if(file.type.startsWith('image/'))content+=`<img src="${file.data}" class="msg-image" alt="Фото">`;else if(file.type.startsWith('video/'))content+=`<video src="${file.data}" class="msg-image" controls></video>`;else content+=`<a href="${file.data}" download="${file.name}" class="block mt-2 p-2 bg-white/10 rounded-lg text-xs sm:text-sm">📎 ${file.name}</a>`})}
+if(msg.files&&msg.files.length>0){msg.files.forEach(file=>{if(file.type.startsWith('image/'))content+=`<img src="${file.data}" class="msg-image" alt="Фото">`;else if(file.type.startsWith('video/'))content+=`<video src="${file.data}" class="msg-image" controls></video>`;else content+=`<a href="${file.data}" download="${file.name}" class="block mt-2 p-2 bg-white/10 rounded-lg text-xs sm:text-sm"> ${file.name}</a>`})}
 }
 content+=`<div class="msg-time">${formatTime(msg.time)}</div>`;
 div.innerHTML=content;
@@ -649,7 +713,15 @@ container.scrollTop=container.scrollHeight;
 
 function handleFileSelect(event){
 const files=Array.from(event.target.files);
-files.forEach(file=>{const reader=new FileReader();reader.onload=function(e){selectedFiles.push({name:file.name,type:file.type,data:e.target.result});renderFilePreview()};reader.readAsDataURL(file)});
+files.forEach(file=>{
+  if(file.size > 5 * 1024 * 1024){
+    alert('Файл слишком большой! Максимум 5MB');
+    return;
+  }
+  const reader=new FileReader();
+  reader.onload=function(e){selectedFiles.push({name:file.name,type:file.type,data:e.target.result});renderFilePreview()};
+  reader.readAsDataURL(file);
+});
 event.target.value='';
 }
 
@@ -674,22 +746,49 @@ if(!clientName){alert('Сначала введите ваше имя!');document
 const input=document.getElementById('chatInput');
 const text=input.value.trim();
 if(!text&&selectedFiles.length===0)return;
-const chats=getChats();
-let chat=chats.find(c=>c.clientId===clientId);
-if(!chat){chat={id:Date.now(),clientId:clientId,clientName:clientName,messages:[],lastMessage:new Date().toISOString(),unread:0,status:'pending',statusText:'Ожидает рассмотрения'};chats.push(chat)}
-const msg={id:Date.now(),sender:'client',senderName:clientName,text:text,files:[...selectedFiles],time:new Date().toISOString()};
-chat.messages.push(msg);
-chat.lastMessage=msg.time;
-if(chat.status==='declined'||chat.status==='completed'){chat.status='pending';chat.statusText='Ожидает рассмотрения'}
-saveChats(chats);
-appendClientMessage(msg);
+
+const chat = allChatsCache[clientId] || {
+  clientId: clientId,
+  clientName: clientName,
+  status: 'pending',
+  statusText: 'Ожидает рассмотрения',
+  lastMessage: new Date().toISOString(),
+  unread: 0,
+  messages: []
+};
+
+const msg={
+  id: Date.now().toString(),
+  sender:'client',
+  senderName:clientName,
+  text:text,
+  files:[...selectedFiles],
+  time:new Date().toISOString()
+};
+
+// Добавляем сообщение в Firebase
+const messagesRef = chatsRef.child(clientId + '/messages');
+messagesRef.push(msg);
+
+// Обновляем статус чата
+const updates = {
+  lastMessage: new Date().toISOString(),
+  unread: (chat.unread || 0) + 1
+};
+if(chat.status==='declined'||chat.status==='completed'){
+  updates.status = 'pending';
+  updates.statusText = 'Ожидает рассмотрения';
+}
+chatsRef.child(clientId).update(updates);
+
 input.value='';
 selectedFiles=[];
 document.getElementById('filePreview').innerHTML='';
-updateChatStatus(chat);
-updateClientActions(chat);
 }
 
+// ============================================================
+// ВХОД МЕНЕДЖЕРА
+// ============================================================
 function openLoginModal(){
 document.getElementById('loginModal').classList.add('active');
 document.getElementById('loginStep1').style.display='block';
@@ -754,24 +853,33 @@ document.getElementById('loginStep1').style.display='block';
 document.getElementById('login2FACode').value='';
 }
 
+// ============================================================
+// ПАНЕЛЬ МЕНЕДЖЕРА
+// ============================================================
 function openManagerPanel(){document.getElementById('managerPanel').classList.add('active');renderChatList()}
 function closeManagerPanel(){document.getElementById('managerPanel').classList.remove('active');currentChatId=null}
 
 function renderChatList(search=''){
 const list=document.getElementById('chatList');
 list.innerHTML='';
-const chats=getChats();
-const filtered=chats.filter(c=>c.clientName.toLowerCase().includes(search.toLowerCase())).sort((a,b)=>new Date(b.lastMessage)-new Date(a.lastMessage));
+
+const chats = Object.values(allChatsCache);
+const filtered=chats
+  .filter(c=>c.clientName && c.clientName.toLowerCase().includes(search.toLowerCase()))
+  .sort((a,b)=>new Date(b.lastMessage||0)-new Date(a.lastMessage||0));
+
 if(filtered.length===0){list.innerHTML='<div class="p-8 text-center text-gray-400">Нет чатов</div>';return}
+
 filtered.forEach(chat=>{
 const div=document.createElement('div');
-div.className=`chat-item ${currentChatId===chat.id?'active':''}`;
-div.onclick=()=>selectChat(chat.id);
-const lastMsg=chat.messages[chat.messages.length-1];
+div.className=`chat-item ${currentChatId===chat.clientId?'active':''}`;
+div.onclick=()=>selectChat(chat.clientId);
+const messages = chat.messages || [];
+const lastMsg=messages[messages.length-1];
 const lastText=lastMsg?(lastMsg.text||'📎 Файл'):'Нет сообщений';
 const statusColors={pending:'bg-yellow-500/20 text-yellow-400',accepted:'bg-green-500/20 text-green-400',declined:'bg-red-500/20 text-red-400',completed:'bg-blue-500/20 text-blue-400'};
 const statusLabels={pending:'⏳ Ожидает',accepted:'✅ Принято',declined:'❌ Отклонено',completed:'🏁 Завершено'};
-div.innerHTML=`<div class="flex items-center justify-between mb-1"><span class="font-semibold text-sm">👤 ${chat.clientName}</span><span class="text-xs text-gray-400">${formatTime(chat.lastMessage)}</span></div><div class="text-xs sm:text-sm text-gray-400 truncate mb-2">${lastText}</div><div class="flex items-center justify-between"><span class="chat-status-badge ${statusColors[chat.status]||statusColors.pending} text-xs">${statusLabels[chat.status]||'⏳ Ожидает'}</span>${chat.unread>0?`<span class="px-2 py-0.5 bg-[#FF0055] text-xs rounded-full">${chat.unread}</span>`:''}</div>`;
+div.innerHTML=`<div class="flex items-center justify-between mb-1"><span class="font-semibold text-sm">👤 ${chat.clientName||'Клиент'}</span><span class="text-xs text-gray-400">${formatTime(chat.lastMessage)}</span></div><div class="text-xs sm:text-sm text-gray-400 truncate mb-2">${lastText}</div><div class="flex items-center justify-between"><span class="chat-status-badge ${statusColors[chat.status]||statusColors.pending} text-xs">${statusLabels[chat.status]||' Ожидает'}</span>${chat.unread>0?`<span class="px-2 py-0.5 bg-[#FF0055] text-xs rounded-full">${chat.unread}</span>`:''}</div>`;
 list.appendChild(div);
 });
 }
@@ -780,17 +888,17 @@ function searchChats(){renderChatList(document.getElementById('managerSearch').v
 
 function selectChat(chatId){
 currentChatId=chatId;
-const chats=getChats();
-const chat=chats.find(c=>c.id===chatId);
+const chat=allChatsCache[chatId];
 if(!chat)return;
 document.getElementById('currentChatName').textContent='👤 '+chat.clientName;
 const statusLabels={pending:'⏳ Ожидает рассмотрения',accepted:'✅ Принято',declined:'❌ Отклонено',completed:' Завершено'};
 document.getElementById('currentChatStatus').textContent=statusLabels[chat.status]||'—';
-renderManagerMessages(chat.messages);
+renderManagerMessages(chat.messages || []);
 renderManagerActions(chat);
 renderChatList(document.getElementById('managerSearch').value);
-chat.unread=0;
-saveChats(chats);
+
+// Сбрасываем счетчик непрочитанных
+chatsRef.child(chatId+'/unread').set(0);
 }
 
 function renderManagerActions(chat){
@@ -799,20 +907,88 @@ const isAdmin=currentRole==='admin';
 let html='';
 if(chat.status==='pending'){html+=`<button onclick="acceptChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-green-500 hover:bg-green-600 rounded-lg font-semibold text-xs sm:text-sm transition">✅</button>`;html+=`<button onclick="declineChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-500 hover:bg-red-600 rounded-lg font-semibold text-xs sm:text-sm transition">❌</button>`}
 if(chat.status==='accepted')html+=`<button onclick="completeChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500 hover:bg-blue-600 rounded-lg font-semibold text-xs sm:text-sm transition">🏁</button>`;
-if(chat.status==='declined')html+=`<button onclick="reopenChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg font-semibold text-xs sm:text-sm transition">🔄</button>`;
-if(isAdmin&&chat.status!=='completed')html+=`<button onclick="resetChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-500 hover:bg-gray-600 rounded-lg font-semibold text-xs sm:text-sm transition">🗑️</button>`;
+if(chat.status==='declined')html+=`<button onclick="reopenChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg font-semibold text-xs sm:text-sm transition"></button>`;
+if(isAdmin&&chat.status!=='completed')html+=`<button onclick="resetChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-500 hover:bg-gray-600 rounded-lg font-semibold text-xs sm:text-sm transition">️</button>`;
 el.innerHTML=html;
 }
 
-function acceptChat(){if(!currentChatId)return;const chats=getChats();const chat=chats.find(c=>c.id===currentChatId);if(!chat)return;chat.status='accepted';chat.statusText='Принято';chat.messages.push({id:Date.now(),sender:'system',systemText:'✅ Чат принят менеджером',time:new Date().toISOString()});chat.lastMessage=new Date().toISOString();saveChats(chats);selectChat(currentChatId)}
-function declineChat(){if(!currentChatId)return;const chats=getChats();const chat=chats.find(c=>c.id===currentChatId);if(!chat)return;chat.status='declined';chat.statusText='Отклонено';chat.messages.push({id:Date.now(),sender:'system',systemText:'❌ Чат отклонен',time:new Date().toISOString()});chat.lastMessage=new Date().toISOString();saveChats(chats);selectChat(currentChatId)}
-function completeChat(){if(!currentChatId)return;const chats=getChats();const chat=chats.find(c=>c.id===currentChatId);if(!chat)return;chat.status='completed';chat.statusText='Завершено';chat.messages.push({id:Date.now(),sender:'system',systemText:'🏁 Чат завершен. Спасибо!',time:new Date().toISOString()});chat.lastMessage=new Date().toISOString();saveChats(chats);selectChat(currentChatId)}
-function reopenChat(){if(!currentChatId)return;const chats=getChats();const chat=chats.find(c=>c.id===currentChatId);if(!chat)return;chat.status='pending';chat.statusText='Ожидает рассмотрения';chat.messages.push({id:Date.now(),sender:'system',systemText:'🔄 Чат открыт повторно',time:new Date().toISOString()});chat.lastMessage=new Date().toISOString();saveChats(chats);selectChat(currentChatId)}
-function resetChat(){if(!currentChatId)return;if(!confirm('Сбросить чат?'))return;const chats=getChats();const idx=chats.findIndex(c=>c.id===currentChatId);if(idx===-1)return;chats[idx].messages=[];chats[idx].status='pending';chats[idx].lastMessage=new Date().toISOString();saveChats(chats);selectChat(currentChatId)}
+function acceptChat(){
+if(!currentChatId)return;
+chatsRef.child(currentChatId).update({
+  status: 'accepted',
+  statusText: 'Принято',
+  lastMessage: new Date().toISOString()
+});
+chatsRef.child(currentChatId+'/messages').push({
+  id: Date.now().toString(),
+  sender: 'system',
+  systemText: '✅ Чат принят менеджером',
+  time: new Date().toISOString()
+});
+}
+
+function declineChat(){
+if(!currentChatId)return;
+chatsRef.child(currentChatId).update({
+  status: 'declined',
+  statusText: 'Отклонено',
+  lastMessage: new Date().toISOString()
+});
+chatsRef.child(currentChatId+'/messages').push({
+  id: Date.now().toString(),
+  sender: 'system',
+  systemText: ' Чат отклонен',
+  time: new Date().toISOString()
+});
+}
+
+function completeChat(){
+if(!currentChatId)return;
+chatsRef.child(currentChatId).update({
+  status: 'completed',
+  statusText: 'Завершено',
+  lastMessage: new Date().toISOString()
+});
+chatsRef.child(currentChatId+'/messages').push({
+  id: Date.now().toString(),
+  sender: 'system',
+  systemText: '🏁 Чат завершен. Спасибо!',
+  time: new Date().toISOString()
+});
+}
+
+function reopenChat(){
+if(!currentChatId)return;
+chatsRef.child(currentChatId).update({
+  status: 'pending',
+  statusText: 'Ожидает рассмотрения',
+  lastMessage: new Date().toISOString()
+});
+chatsRef.child(currentChatId+'/messages').push({
+  id: Date.now().toString(),
+  sender: 'system',
+  systemText: '🔄 Чат открыт повторно',
+  time: new Date().toISOString()
+});
+}
+
+function resetChat(){
+if(!currentChatId)return;
+if(!confirm('Сбросить чат? Все сообщения будут удалены.'))return;
+chatsRef.child(currentChatId+'/messages').remove();
+chatsRef.child(currentChatId).update({
+  status: 'pending',
+  lastMessage: new Date().toISOString()
+});
+}
 
 function renderManagerMessages(messages){
 const container=document.getElementById('managerChatMessages');
 container.innerHTML='';
+if(!messages || messages.length===0){
+  container.innerHTML='<div class="text-center text-gray-400 mt-20"><p>Нет сообщений</p></div>';
+  return;
+}
 messages.forEach(msg=>{
 const div=document.createElement('div');
 div.className=`msg ${msg.sender}`;
@@ -820,7 +996,7 @@ let content='';
 if(msg.systemText){div.className='msg system';content=`<div>${msg.systemText}</div>`}
 else{
 if(msg.sender==='client'&&msg.senderName)content+=`<div class="msg-author">👤 ${msg.senderName}</div>`;
-if(msg.sender==='manager'&&msg.senderName)content+=`<div class="msg-author">👤 ${msg.senderName}</div>`;
+if(msg.sender==='manager'&&msg.senderName)content+=`<div class="msg-author"> ${msg.senderName}</div>`;
 content+=`<div>${msg.text||''}</div>`;
 if(msg.files&&msg.files.length>0){msg.files.forEach(file=>{if(file.type.startsWith('image/'))content+=`<img src="${file.data}" class="msg-image" alt="Фото">`;else if(file.type.startsWith('video/'))content+=`<video src="${file.data}" class="msg-image" controls></video>`;else content+=`<a href="${file.data}" download="${file.name}" class="block mt-2 p-2 bg-white/10 rounded-lg text-xs sm:text-sm">📎 ${file.name}</a>`})}
 }
@@ -833,7 +1009,15 @@ container.scrollTop=container.scrollHeight;
 
 function handleManagerFileSelect(event){
 const files=Array.from(event.target.files);
-files.forEach(file=>{const reader=new FileReader();reader.onload=function(e){managerSelectedFiles.push({name:file.name,type:file.type,data:e.target.result});renderManagerFilePreview()};reader.readAsDataURL(file)});
+files.forEach(file=>{
+  if(file.size > 5 * 1024 * 1024){
+    alert('Файл слишком большой! Максимум 5MB');
+    return;
+  }
+  const reader=new FileReader();
+  reader.onload=function(e){managerSelectedFiles.push({name:file.name,type:file.type,data:e.target.result});renderManagerFilePreview()};
+  reader.readAsDataURL(file);
+});
 event.target.value='';
 }
 
@@ -858,23 +1042,46 @@ if(!currentChatId)return;
 const input=document.getElementById('managerChatInput');
 const text=input.value.trim();
 if(!text&&managerSelectedFiles.length===0)return;
-const chats=getChats();
-const chat=chats.find(c=>c.id===currentChatId);
+
+const chat = allChatsCache[currentChatId];
 if(!chat)return;
+
 const senderName=currentRole==='admin'?'Администратор':'Модератор';
-const msg={id:Date.now(),sender:'manager',senderName:senderName,text:text,files:[...managerSelectedFiles],time:new Date().toISOString()};
-chat.messages.push(msg);
-chat.lastMessage=msg.time;
-if(chat.status==='pending'){chat.status='accepted';chat.statusText='Принято';chat.messages.push({id:Date.now()+1,sender:'system',systemText:'✅ Чат автоматически принят',time:new Date().toISOString()})}
-saveChats(chats);
-renderManagerMessages(chat.messages);
-renderManagerActions(chat);
-renderChatList(document.getElementById('managerSearch').value);
+const msg={
+  id: Date.now().toString(),
+  sender:'manager',
+  senderName:senderName,
+  text:text,
+  files:[...managerSelectedFiles],
+  time:new Date().toISOString()
+};
+
+chatsRef.child(currentChatId+'/messages').push(msg);
+
+const updates = {
+  lastMessage: new Date().toISOString()
+};
+if(chat.status==='pending'){
+  updates.status = 'accepted';
+  updates.statusText = 'Принято';
+  // Системное сообщение о автопринятии
+  chatsRef.child(currentChatId+'/messages').push({
+    id: (Date.now()+1).toString(),
+    sender: 'system',
+    systemText: '✅ Чат автоматически принят',
+    time: new Date().toISOString()
+  });
+}
+chatsRef.child(currentChatId).update(updates);
+
 input.value='';
 managerSelectedFiles=[];
 document.getElementById('managerFilePreview').innerHTML='';
 }
 
+// ============================================================
+// НАСТРОЙКИ
+// ============================================================
 function openSettings(){
 if(currentRole!=='admin'){alert('⚠️ Настройки только для админа!');return}
 document.getElementById('settingsModal').classList.add('active');
@@ -950,7 +1157,11 @@ saveSettings(s);
 renderModeratorsList();
 }
 
+// ============================================================
+// УТИЛИТЫ
+// ============================================================
 function formatTime(isoString){
+if(!isoString) return '—';
 const date=new Date(isoString);
 const now=new Date();
 const diff=now-date;
@@ -995,7 +1206,7 @@ const countDiv=document.createElement('div');
 countDiv.className='mb-3 sm:mb-4 text-xs sm:text-sm text-gray-400';
 countDiv.textContent=`Найдено: ${results.length}`;
 container.appendChild(countDiv);
-const badges={youtube:'<span class="service-badge bg-red-500/20 text-red-300">▶️ YouTube</span>',vk:'<span class="service-badge bg-blue-500/20 text-blue-300">💙 VK</span>',telegram:'<span class="service-badge bg-sky-500/20 text-sky-300">✈️ Telegram</span>',twitch:'<span class="service-badge bg-purple-500/20 text-purple-300">📺 Twitch</span>',tiktok:'<span class="service-badge bg-pink-500/20 text-pink-300">🎵 TikTok</span>'};
+const badges={youtube:'<span class="service-badge bg-red-500/20 text-red-300">▶️ YouTube</span>',vk:'<span class="service-badge bg-blue-500/20 text-blue-300">💙 VK</span>',telegram:'<span class="service-badge bg-sky-500/20 text-sky-300">✈️ Telegram</span>',twitch:'<span class="service-badge bg-purple-500/20 text-purple-300"> Twitch</span>',tiktok:'<span class="service-badge bg-pink-500/20 text-pink-300">🎵 TikTok</span>'};
 results.forEach((result,index)=>{
 const card=document.createElement('div');
 card.className='result-item glass rounded-2xl overflow-hidden';
