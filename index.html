@@ -6,11 +6,8 @@
 <title>MaksimLive | Официальный сайт</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-
 <style>
 :root{--p:#FF0055;--s:#00F0FF;--a:#7000FF;--bg:#050505}
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
@@ -42,8 +39,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 .result-item{animation:slideIn .4s ease-out}
 @keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .video-frame{border:2px solid rgba(255,0,85,.3);border-radius:1rem;overflow:hidden;box-shadow:0 0 30px rgba(255,0,85,.2)}
-
-/* ЧАТ */
 .chat-widget{position:fixed;bottom:80px;right:15px;z-index:1000}
 .chat-window{position:fixed;bottom:0;right:0;left:0;width:100%;height:calc(100vh - 60px);background:rgba(20,20,25,.98);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:20px 20px 0 0;display:none;flex-direction:column;overflow:hidden;z-index:1000}
 @media(min-width:640px){.chat-window{bottom:80px;right:15px;left:auto;width:380px;height:600px;border-radius:20px}}
@@ -66,8 +61,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 .msg-preview{position:relative;display:inline-block;margin:3px}
 .msg-preview img,.msg-preview video{max-width:80px;max-height:80px;border-radius:8px;object-fit:cover}
 .remove-preview{position:absolute;top:-6px;right:-6px;background:#FF0055;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px}
-
-/* МЕНЕДЖЕР */
 .manager-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:2000;display:none;flex-direction:column}
 .manager-panel.active{display:flex}
 .manager-sidebar{width:100%;height:45%;border-right:none;border-bottom:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;overflow:hidden}
@@ -78,8 +71,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 .manager-main{flex:1;display:flex;flex-direction:column;overflow:hidden;height:55%}
 @media(min-width:768px){.manager-sidebar{width:320px;height:100%;border-right:1px solid rgba(255,255,255,.1);border-bottom:none}.manager-main{height:100%}}
 @media(min-width:1024px){.manager-sidebar{width:380px}}
-
-/* МОДАЛКИ */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:3000;display:none;align-items:center;justify-content:center;padding:15px}
 .modal-overlay.active{display:flex}
 .modal{background:rgba(20,20,25,.98);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -99,10 +90,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 .moderator-item{display:flex;align-items:center;gap:8px;padding:10px;background:rgba(255,255,255,.05);border-radius:12px;margin-bottom:8px;flex-wrap:wrap}
 .moderator-item input{flex:1;min-width:80px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px;color:#fff;font-size:13px}
 .moderator-item input:focus{outline:none;border-color:var(--p)}
-
-.online-indicator{display:inline-block;width:8px;height:8px;background:#4caf50;border-radius:50%;margin-right:6px;animation:pulse 2s infinite}
-.offline-indicator{display:inline-block;width:8px;height:8px;background:#666;border-radius:50%;margin-right:6px}
-
 @media(max-width:1024px){.stream-grid{grid-template-columns:1fr!important}.stream-player{height:220px!important}.stream-chat{height:350px!important}}
 @media(min-width:640px) and (max-width:1023px){.stream-player{height:280px!important}.stream-chat{height:400px!important}}
 </style>
@@ -145,7 +132,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
 </button>
 </div>
-
 <div id="nameInputSection" class="p-3 sm:p-4 border-b border-white/10 bg-white/5 flex-shrink-0">
 <p class="text-sm text-gray-300 mb-2">Как к вам обращаться?</p>
 <div class="flex gap-2">
@@ -153,7 +139,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <button onclick="saveClientName()" class="px-4 py-2 bg-gradient-to-r from-[#FF0055] to-[#7000FF] rounded-xl font-bold text-sm hover:scale-105 transition flex-shrink-0">OK</button>
 </div>
 </div>
-
 <div id="chatMessages" class="chat-messages"></div>
 <div id="chatActions" class="px-3 sm:px-4 py-2 border-t border-white/10 flex gap-2 flex-wrap flex-shrink-0"></div>
 <div class="chat-input-area">
@@ -174,7 +159,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div id="managerPanel" class="manager-panel">
 <div class="manager-sidebar">
 <div class="p-3 sm:p-4 border-b border-white/10 flex items-center justify-between flex-shrink-0">
-<h2 class="text-lg sm:text-xl font-bold">💬 Чаты</h2>
+<h2 class="text-lg sm:text-xl font-bold"> Чаты</h2>
 <div class="flex gap-2">
 <button onclick="openSettings()" class="p-2 hover:bg-white/10 rounded-full transition" title="Настройки">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -227,7 +212,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div id="settingsModal" class="modal-overlay">
 <div class="modal">
 <div class="flex items-center justify-between mb-4 sm:mb-6">
-<h2 class="text-xl sm:text-2xl font-bold">⚙️ Настройки</h2>
+<h2 class="text-xl sm:text-2xl font-bold">️ Настройки</h2>
 <button onclick="closeSettings()" class="p-2 hover:bg-white/10 rounded-full">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
 </button>
@@ -251,7 +236,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <button onclick="saveTwoFactor()" class="modal-btn modal-btn-primary">Сохранить код</button>
 </div>
 <div class="mt-3 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
-<p class="text-xs text-yellow-400">💡 Если забудете код 2FA, сможете войти только по паролю</p>
+<p class="text-xs text-yellow-400">💡 Если забудете код 2FA, сможете войти только по паролю (5 попыток)</p>
 </div>
 </div>
 <div class="mb-5 sm:mb-6">
@@ -351,7 +336,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="vk">💙 VK</button>
 <button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="telegram">✈️ Telegram</button>
 <button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="twitch">📺 Twitch</button>
-<button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="tiktok"> TikTok</button>
+<button class="filter-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold" data-result-filter="tiktok">🎵 TikTok</button>
 </div>
 </div>
 <div id="searchResults" class="space-y-3 sm:space-y-4">
@@ -364,21 +349,21 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF0055] blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">️</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🖱️</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Кликер</h3>
 <p class="text-gray-400 mb-3 sm:mb-6 text-xs sm:text-sm">Мой проект. Кликай и ставь рекорды!</p>
 <a href="https://klik-klan-scm6.onrender.com" target="_blank" class="block w-full py-2 sm:py-3 bg-[#FF0055] hover:bg-[#ff3377] text-center rounded-xl font-bold transition shadow-lg shadow-[#FF0055]/20 text-sm sm:text-base">Играть</a>
 </div>
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">️</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">⛏️</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Minecraft</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Зайди в <span class="text-white font-semibold">Telegram-канал</span>, напиши «добавь меня белый список»!</p>
 <a href="https://t.me/buildingsinMine" target="_blank" class="block w-full py-2 sm:py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-center rounded-xl font-bold transition shadow-lg shadow-green-500/20 text-sm sm:text-base">Перейти</a>
 </div>
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group sm:col-span-2 lg:col-span-1">
 <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🎯</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Steam</h3>
 <p class="text-gray-400 mb-3 sm:mb-6 text-xs sm:text-sm">Мой профиль и достижения.</p>
 <a href="https://steamcommunity.com/profiles/76561199128139673/" target="_blank" class="block w-full py-2 sm:py-3 bg-[#1b2838] hover:bg-[#2a475e] text-center rounded-xl font-bold transition border border-white/10 text-sm sm:text-base">Открыть</a>
@@ -396,7 +381,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-blue-500/20 text-blue-300">Репортаж</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🎥</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Репортажная</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Съемка мероприятий и стримов.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• До 3 часов</li><li>• 30-50 фото</li><li>• Срочная обработка</li></ul>
@@ -406,7 +391,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-pink-500/20 text-pink-300">Портрет</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🌟</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Индивидуальная</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Персональная фотосессия.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• 1-2 часа</li><li>• 20-30 фото</li><li>• Помощь с локацией</li></ul>
@@ -440,7 +425,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF0055] blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-[#FF0055]/20 text-red-300">Видео</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🎬</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Монтаж видео</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Монтаж стримов, нарезки, TikTok/Reels.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• Нарезки и клипы</li><li>• Эффекты и переходы</li><li>• Субтитры и музыка</li></ul>
@@ -450,7 +435,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-pink-500/20 text-pink-300">Партнерство</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl"></div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">🤝</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Коллаборация</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Совместные стримы и видео.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• Совместные эфиры</li><li>• Видео-коллабы</li><li>• Взаимный пиар</li></ul>
@@ -460,7 +445,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 <div class="glass p-4 sm:p-6 rounded-2xl relative overflow-hidden group">
 <div class="absolute top-0 right-0 w-32 h-32 bg-green-500 blur-[80px] opacity-20 group-hover:opacity-40 transition"></div>
 <span class="service-badge bg-green-500/20 text-green-300">Техническая</span>
-<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">⚙️</div>
+<div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/10 rounded-xl flex items-center justify-center mb-2 sm:mb-4 text-xl sm:text-3xl">️</div>
 <h3 class="text-lg sm:text-2xl font-bold mb-2">Настройка сервера</h3>
 <p class="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">Minecraft, Discord бот, OBS.</p>
 <ul class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 space-y-1"><li>• Minecraft / Discord / OBS</li><li>• Плагины и моды</li><li>• Консультация</li></ul>
@@ -535,7 +520,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;overflow-x:
 
 <script>
 // ============================================================
-// 🔥 FIREBASE КОНФИГ - ЗАМЕНИ НА СВОЙ ИЗ ШАГА 3!
+// 🔥 FIREBASE КОНФИГ - ЗАМЕНИ НА СВОЙ ИЗ FIREBASE CONSOLE!
 // ============================================================
 const firebaseConfig = {
   apiKey: "ВСТАВЬ_СЮДА_СВОЙ_API_KEY",
@@ -547,14 +532,10 @@ const firebaseConfig = {
   appId: "ВСТАВЬ_СЮДА"
 };
 
-// Инициализация Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const chatsRef = db.ref('chats');
 
-// ============================================================
-// ОСНОВНОЙ КОД САЙТА
-// ============================================================
 const CHANNEL_NAME='maksimLive007';
 const TWITCH_PROXY_URL='https://api.rss2json.com/utils/twitch/channel/';
 const YOUTUBE_CHANNEL_ID='UCEBTFu4B4NevkLbk1Y5QT5w';
@@ -582,7 +563,6 @@ btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 });
 });
 
-// Настройки хранятся локально (пароль, модераторы, 2FA)
 const DEFAULT_SETTINGS={adminPassword:'1',twoFactorEnabled:false,twoFactorCode:'123456',moderators:[]};
 function getSettings(){try{return JSON.parse(localStorage.getItem('ml_settings'))||DEFAULT_SETTINGS}catch(e){return DEFAULT_SETTINGS}}
 function saveSettings(s){localStorage.setItem('ml_settings',JSON.stringify(s))}
@@ -596,16 +576,16 @@ let managerSelectedFiles=[];
 let currentChatId=null;
 let currentRole=null;
 let currentModeratorId=null;
-let allChatsCache={}; // Кэш всех чатов из Firebase
+let allChatsCache={};
 
-// ============================================================
-// FIREBASE: СЛУШАТЕЛЬ ВСЕХ ЧАТОВ (реальное время)
-// ============================================================
+// Счетчик попыток 2FA
+let failedAttempts = parseInt(localStorage.getItem('ml_failedAttempts') || '0');
+
+// Firebase listener
 chatsRef.on('value', (snapshot) => {
   const data = snapshot.val() || {};
   allChatsCache = data;
   
-  // Обновляем интерфейс клиента если открыт чат
   if(document.getElementById('chatWindow').classList.contains('active')){
     const chat = allChatsCache[clientId];
     if(chat){
@@ -615,7 +595,6 @@ chatsRef.on('value', (snapshot) => {
     }
   }
   
-  // Обновляем интерфейс менеджера если открыта панель
   if(document.getElementById('managerPanel').classList.contains('active')){
     renderChatList(document.getElementById('managerSearch').value);
     if(currentChatId && allChatsCache[currentChatId]){
@@ -624,9 +603,6 @@ chatsRef.on('value', (snapshot) => {
   }
 });
 
-// ============================================================
-// ЧАТ КЛИЕНТА
-// ============================================================
 function toggleChat(){
 const w=document.getElementById('chatWindow');
 w.classList.toggle('active');
@@ -639,7 +615,6 @@ document.getElementById('clientNameInput').value=clientName;
 
 const chat = allChatsCache[clientId];
 if(!chat){
-  // Создаем новый чат в Firebase
   const newChat = {
     clientId: clientId,
     clientName: clientName || 'Клиент '+clientId.slice(-6),
@@ -662,19 +637,16 @@ const name=document.getElementById('clientNameInput').value.trim();
 if(!name){alert('Введите имя');return}
 clientName=name;
 localStorage.setItem('ml_clientName',clientName);
-
-// Обновляем имя в Firebase
 if(allChatsCache[clientId]){
   chatsRef.child(clientId+'/clientName').set(clientName);
 }
-
 document.getElementById('nameInputSection').style.display='none';
 loadClientChat();
 }
 
 function updateChatStatus(chat){
 const el=document.getElementById('chatStatusText');
-const statusMap={pending:{text:'⏳ Ожидает',color:'text-yellow-400'},accepted:{text:'✅ Принято',color:'text-green-400'},declined:{text:'❌ Отклонено',color:'text-red-400'},completed:{text:'🏁 Завершено',color:'text-blue-400'}};
+const statusMap={pending:{text:' Ожидает',color:'text-yellow-400'},accepted:{text:'✅ Принято',color:'text-green-400'},declined:{text:'❌ Отклонено',color:'text-red-400'},completed:{text:' Завершено',color:'text-blue-400'}};
 const s=statusMap[chat.status]||statusMap.pending;
 el.innerHTML=`<span class="${s.color}">${s.text}</span>`;
 }
@@ -701,9 +673,9 @@ div.className=`msg ${msg.sender}`;
 let content='';
 if(msg.systemText){div.className='msg system';content=`<div>${msg.systemText}</div>`}
 else{
-if(msg.sender==='manager'&&msg.senderName)content+=`<div class="msg-author">👤 ${msg.senderName}</div>`;
+if(msg.sender==='manager'&&msg.senderName)content+=`<div class="msg-author"> ${msg.senderName}</div>`;
 content+=`<div>${msg.text||''}</div>`;
-if(msg.files&&msg.files.length>0){msg.files.forEach(file=>{if(file.type.startsWith('image/'))content+=`<img src="${file.data}" class="msg-image" alt="Фото">`;else if(file.type.startsWith('video/'))content+=`<video src="${file.data}" class="msg-image" controls></video>`;else content+=`<a href="${file.data}" download="${file.name}" class="block mt-2 p-2 bg-white/10 rounded-lg text-xs sm:text-sm"> ${file.name}</a>`})}
+if(msg.files&&msg.files.length>0){msg.files.forEach(file=>{if(file.type.startsWith('image/'))content+=`<img src="${file.data}" class="msg-image" alt="Фото">`;else if(file.type.startsWith('video/'))content+=`<video src="${file.data}" class="msg-image" controls></video>`;else content+=`<a href="${file.data}" download="${file.name}" class="block mt-2 p-2 bg-white/10 rounded-lg text-xs sm:text-sm">📎 ${file.name}</a>`})}
 }
 content+=`<div class="msg-time">${formatTime(msg.time)}</div>`;
 div.innerHTML=content;
@@ -714,10 +686,7 @@ container.scrollTop=container.scrollHeight;
 function handleFileSelect(event){
 const files=Array.from(event.target.files);
 files.forEach(file=>{
-  if(file.size > 5 * 1024 * 1024){
-    alert('Файл слишком большой! Максимум 5MB');
-    return;
-  }
+  if(file.size > 5 * 1024 * 1024){alert('Файл слишком большой! Максимум 5MB');return}
   const reader=new FileReader();
   reader.onload=function(e){selectedFiles.push({name:file.name,type:file.type,data:e.target.result});renderFilePreview()};
   reader.readAsDataURL(file);
@@ -766,11 +735,9 @@ const msg={
   time:new Date().toISOString()
 };
 
-// Добавляем сообщение в Firebase
 const messagesRef = chatsRef.child(clientId + '/messages');
 messagesRef.push(msg);
 
-// Обновляем статус чата
 const updates = {
   lastMessage: new Date().toISOString(),
   unread: (chat.unread || 0) + 1
@@ -786,90 +753,129 @@ selectedFiles=[];
 document.getElementById('filePreview').innerHTML='';
 }
 
-// ============================================================
-// ВХОД МЕНЕДЖЕРА
-// ============================================================
 function openLoginModal(){
-document.getElementById('loginModal').classList.add('active');
-document.getElementById('loginStep1').style.display='block';
-document.getElementById('loginStep2').style.display='none';
-document.getElementById('loginPassword').value='';
-document.getElementById('login2FACode').value='';
+  document.getElementById('loginModal').classList.add('active');
+  document.getElementById('loginStep1').style.display = 'block';
+  document.getElementById('loginStep2').style.display = 'none';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('login2FACode').value = '';
 }
 function closeLoginModal(){document.getElementById('loginModal').classList.remove('active')}
 
 function checkLogin(){
-const pass=document.getElementById('loginPassword').value;
-const settings=getSettings();
-if(pass===settings.adminPassword){
-currentRole='admin';
-currentModeratorId=null;
-if(settings.twoFactorEnabled){
-document.getElementById('loginStep1').style.display='none';
-document.getElementById('loginStep2').style.display='block';
-}else{
-closeLoginModal();
-openManagerPanel();
-}
-return;
-}
-const mod=settings.moderators.find(m=>m.password===pass);
-if(mod){
-currentRole='moderator';
-currentModeratorId=mod.id;
-if(settings.twoFactorEnabled){
-document.getElementById('loginStep1').style.display='none';
-document.getElementById('loginStep2').style.display='block';
-}else{
-closeLoginModal();
-openManagerPanel();
-}
-return;
-}
-alert('❌ Неверный пароль!');
+  const pass = document.getElementById('loginPassword').value;
+  const settings = getSettings();
+  
+  if(pass === settings.adminPassword){
+    currentRole = 'admin';
+    currentModeratorId = null;
+    if(settings.twoFactorEnabled){
+      document.getElementById('loginStep1').style.display = 'none';
+      document.getElementById('loginStep2').style.display = 'block';
+      updateAttemptsDisplay();
+    } else {
+      closeLoginModal();
+      openManagerPanel();
+    }
+    return;
+  }
+  
+  const mod = settings.moderators.find(m => m.password === pass);
+  if(mod){
+    currentRole = 'moderator';
+    currentModeratorId = mod.id;
+    if(settings.twoFactorEnabled){
+      document.getElementById('loginStep1').style.display = 'none';
+      document.getElementById('loginStep2').style.display = 'block';
+      updateAttemptsDisplay();
+    } else {
+      closeLoginModal();
+      openManagerPanel();
+    }
+    return;
+  }
+  
+  alert('❌ Неверный пароль!');
 }
 
 function check2FA(){
-const code=document.getElementById('login2FACode').value;
-const settings=getSettings();
-if(code===settings.twoFactorCode){
-closeLoginModal();
-openManagerPanel();
-}else{
-alert('❌ Неверный код! Если забыли код, нажмите "Войти только по паролю"');
+  const code = document.getElementById('login2FACode').value.trim();
+  const settings = getSettings();
+  
+  if(code === settings.twoFactorCode){
+    failedAttempts = 0;
+    localStorage.setItem('ml_failedAttempts', '0');
+    closeLoginModal();
+    openManagerPanel();
+  } else {
+    failedAttempts++;
+    localStorage.setItem('ml_failedAttempts', failedAttempts.toString());
+    
+    const attemptsLeft = 5 - failedAttempts;
+    
+    if(attemptsLeft > 0){
+      alert(`❌ Неверный код! Осталось попыток: ${attemptsLeft}`);
+      document.getElementById('login2FACode').value = '';
+      document.getElementById('login2FACode').focus();
+    } else {
+      if(confirm('️ Превышено количество попыток.\n\nВойти только по паролю (без 2FA)?')){
+        failedAttempts = 0;
+        localStorage.setItem('ml_failedAttempts', '0');
+        closeLoginModal();
+        openManagerPanel();
+      } else {
+        backToPassword();
+      }
+    }
+  }
 }
+
+function updateAttemptsDisplay(){
+  const attemptsLeft = 5 - failedAttempts;
+  const step2 = document.getElementById('loginStep2');
+  const oldWarning = document.getElementById('attemptsWarning');
+  if(oldWarning) oldWarning.remove();
+  
+  if(attemptsLeft <= 2 && attemptsLeft > 0){
+    const warning = document.createElement('div');
+    warning.id = 'attemptsWarning';
+    warning.className = 'text-yellow-400 text-xs text-center mb-3';
+    warning.textContent = `⚠️ Осталось попыток: ${attemptsLeft}`;
+    step2.insertBefore(warning, step2.firstChild);
+  }
 }
 
 function loginWithPasswordOnly(){
-if(confirm('⚠️ Вход только по паролю (без 2FA). Вы уверены?')){
-closeLoginModal();
-openManagerPanel();
-}
+  if(failedAttempts >= 5){
+    failedAttempts = 0;
+    localStorage.setItem('ml_failedAttempts', '0');
+    closeLoginModal();
+    openManagerPanel();
+  } else {
+    if(confirm('⚠️ Вход только по паролю (без 2FA). Вы уверены?')){
+      closeLoginModal();
+      openManagerPanel();
+    }
+  }
 }
 
 function backToPassword(){
-document.getElementById('loginStep2').style.display='none';
-document.getElementById('loginStep1').style.display='block';
-document.getElementById('login2FACode').value='';
+  document.getElementById('loginStep2').style.display = 'none';
+  document.getElementById('loginStep1').style.display = 'block';
+  document.getElementById('login2FACode').value = '';
+  failedAttempts = 0;
+  localStorage.setItem('ml_failedAttempts', '0');
 }
 
-// ============================================================
-// ПАНЕЛЬ МЕНЕДЖЕРА
-// ============================================================
 function openManagerPanel(){document.getElementById('managerPanel').classList.add('active');renderChatList()}
 function closeManagerPanel(){document.getElementById('managerPanel').classList.remove('active');currentChatId=null}
 
 function renderChatList(search=''){
 const list=document.getElementById('chatList');
 list.innerHTML='';
-
 const chats = Object.values(allChatsCache);
-const filtered=chats
-  .filter(c=>c.clientName && c.clientName.toLowerCase().includes(search.toLowerCase()))
-  .sort((a,b)=>new Date(b.lastMessage||0)-new Date(a.lastMessage||0));
-
+const filtered=chats.filter(c=>c.clientName && c.clientName.toLowerCase().includes(search.toLowerCase())).sort((a,b)=>new Date(b.lastMessage||0)-new Date(a.lastMessage||0));
 if(filtered.length===0){list.innerHTML='<div class="p-8 text-center text-gray-400">Нет чатов</div>';return}
-
 filtered.forEach(chat=>{
 const div=document.createElement('div');
 div.className=`chat-item ${currentChatId===chat.clientId?'active':''}`;
@@ -878,8 +884,8 @@ const messages = chat.messages || [];
 const lastMsg=messages[messages.length-1];
 const lastText=lastMsg?(lastMsg.text||'📎 Файл'):'Нет сообщений';
 const statusColors={pending:'bg-yellow-500/20 text-yellow-400',accepted:'bg-green-500/20 text-green-400',declined:'bg-red-500/20 text-red-400',completed:'bg-blue-500/20 text-blue-400'};
-const statusLabels={pending:'⏳ Ожидает',accepted:'✅ Принято',declined:'❌ Отклонено',completed:'🏁 Завершено'};
-div.innerHTML=`<div class="flex items-center justify-between mb-1"><span class="font-semibold text-sm">👤 ${chat.clientName||'Клиент'}</span><span class="text-xs text-gray-400">${formatTime(chat.lastMessage)}</span></div><div class="text-xs sm:text-sm text-gray-400 truncate mb-2">${lastText}</div><div class="flex items-center justify-between"><span class="chat-status-badge ${statusColors[chat.status]||statusColors.pending} text-xs">${statusLabels[chat.status]||' Ожидает'}</span>${chat.unread>0?`<span class="px-2 py-0.5 bg-[#FF0055] text-xs rounded-full">${chat.unread}</span>`:''}</div>`;
+const statusLabels={pending:'⏳ Ожидает',accepted:'✅ Принято',declined:'❌ Отклонено',completed:' Завершено'};
+div.innerHTML=`<div class="flex items-center justify-between mb-1"><span class="font-semibold text-sm">👤 ${chat.clientName||'Клиент'}</span><span class="text-xs text-gray-400">${formatTime(chat.lastMessage)}</span></div><div class="text-xs sm:text-sm text-gray-400 truncate mb-2">${lastText}</div><div class="flex items-center justify-between"><span class="chat-status-badge ${statusColors[chat.status]||statusColors.pending} text-xs">${statusLabels[chat.status]||'⏳ Ожидает'}</span>${chat.unread>0?`<span class="px-2 py-0.5 bg-[#FF0055] text-xs rounded-full">${chat.unread}</span>`:''}</div>`;
 list.appendChild(div);
 });
 }
@@ -896,8 +902,6 @@ document.getElementById('currentChatStatus').textContent=statusLabels[chat.statu
 renderManagerMessages(chat.messages || []);
 renderManagerActions(chat);
 renderChatList(document.getElementById('managerSearch').value);
-
-// Сбрасываем счетчик непрочитанных
 chatsRef.child(chatId+'/unread').set(0);
 }
 
@@ -907,88 +911,42 @@ const isAdmin=currentRole==='admin';
 let html='';
 if(chat.status==='pending'){html+=`<button onclick="acceptChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-green-500 hover:bg-green-600 rounded-lg font-semibold text-xs sm:text-sm transition">✅</button>`;html+=`<button onclick="declineChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-500 hover:bg-red-600 rounded-lg font-semibold text-xs sm:text-sm transition">❌</button>`}
 if(chat.status==='accepted')html+=`<button onclick="completeChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500 hover:bg-blue-600 rounded-lg font-semibold text-xs sm:text-sm transition">🏁</button>`;
-if(chat.status==='declined')html+=`<button onclick="reopenChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg font-semibold text-xs sm:text-sm transition"></button>`;
-if(isAdmin&&chat.status!=='completed')html+=`<button onclick="resetChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-500 hover:bg-gray-600 rounded-lg font-semibold text-xs sm:text-sm transition">️</button>`;
+if(chat.status==='declined')html+=`<button onclick="reopenChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg font-semibold text-xs sm:text-sm transition">🔄</button>`;
+if(isAdmin&&chat.status!=='completed')html+=`<button onclick="resetChat()" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-500 hover:bg-gray-600 rounded-lg font-semibold text-xs sm:text-sm transition">🗑️</button>`;
 el.innerHTML=html;
 }
 
 function acceptChat(){
 if(!currentChatId)return;
-chatsRef.child(currentChatId).update({
-  status: 'accepted',
-  statusText: 'Принято',
-  lastMessage: new Date().toISOString()
-});
-chatsRef.child(currentChatId+'/messages').push({
-  id: Date.now().toString(),
-  sender: 'system',
-  systemText: '✅ Чат принят менеджером',
-  time: new Date().toISOString()
-});
+chatsRef.child(currentChatId).update({status:'accepted',statusText:'Принято',lastMessage:new Date().toISOString()});
+chatsRef.child(currentChatId+'/messages').push({id:Date.now().toString(),sender:'system',systemText:'✅ Чат принят менеджером',time:new Date().toISOString()});
 }
-
 function declineChat(){
 if(!currentChatId)return;
-chatsRef.child(currentChatId).update({
-  status: 'declined',
-  statusText: 'Отклонено',
-  lastMessage: new Date().toISOString()
-});
-chatsRef.child(currentChatId+'/messages').push({
-  id: Date.now().toString(),
-  sender: 'system',
-  systemText: ' Чат отклонен',
-  time: new Date().toISOString()
-});
+chatsRef.child(currentChatId).update({status:'declined',statusText:'Отклонено',lastMessage:new Date().toISOString()});
+chatsRef.child(currentChatId+'/messages').push({id:Date.now().toString(),sender:'system',systemText:'❌ Чат отклонен',time:new Date().toISOString()});
 }
-
 function completeChat(){
 if(!currentChatId)return;
-chatsRef.child(currentChatId).update({
-  status: 'completed',
-  statusText: 'Завершено',
-  lastMessage: new Date().toISOString()
-});
-chatsRef.child(currentChatId+'/messages').push({
-  id: Date.now().toString(),
-  sender: 'system',
-  systemText: '🏁 Чат завершен. Спасибо!',
-  time: new Date().toISOString()
-});
+chatsRef.child(currentChatId).update({status:'completed',statusText:'Завершено',lastMessage:new Date().toISOString()});
+chatsRef.child(currentChatId+'/messages').push({id:Date.now().toString(),sender:'system',systemText:'🏁 Чат завершен. Спасибо!',time:new Date().toISOString()});
 }
-
 function reopenChat(){
 if(!currentChatId)return;
-chatsRef.child(currentChatId).update({
-  status: 'pending',
-  statusText: 'Ожидает рассмотрения',
-  lastMessage: new Date().toISOString()
-});
-chatsRef.child(currentChatId+'/messages').push({
-  id: Date.now().toString(),
-  sender: 'system',
-  systemText: '🔄 Чат открыт повторно',
-  time: new Date().toISOString()
-});
+chatsRef.child(currentChatId).update({status:'pending',statusText:'Ожидает рассмотрения',lastMessage:new Date().toISOString()});
+chatsRef.child(currentChatId+'/messages').push({id:Date.now().toString(),sender:'system',systemText:'🔄 Чат открыт повторно',time:new Date().toISOString()});
 }
-
 function resetChat(){
 if(!currentChatId)return;
-if(!confirm('Сбросить чат? Все сообщения будут удалены.'))return;
+if(!confirm('Сбросить чат?'))return;
 chatsRef.child(currentChatId+'/messages').remove();
-chatsRef.child(currentChatId).update({
-  status: 'pending',
-  lastMessage: new Date().toISOString()
-});
+chatsRef.child(currentChatId).update({status:'pending',lastMessage:new Date().toISOString()});
 }
 
 function renderManagerMessages(messages){
 const container=document.getElementById('managerChatMessages');
 container.innerHTML='';
-if(!messages || messages.length===0){
-  container.innerHTML='<div class="text-center text-gray-400 mt-20"><p>Нет сообщений</p></div>';
-  return;
-}
+if(!messages||messages.length===0){container.innerHTML='<div class="text-center text-gray-400 mt-20"><p>Нет сообщений</p></div>';return}
 messages.forEach(msg=>{
 const div=document.createElement('div');
 div.className=`msg ${msg.sender}`;
@@ -996,7 +954,7 @@ let content='';
 if(msg.systemText){div.className='msg system';content=`<div>${msg.systemText}</div>`}
 else{
 if(msg.sender==='client'&&msg.senderName)content+=`<div class="msg-author">👤 ${msg.senderName}</div>`;
-if(msg.sender==='manager'&&msg.senderName)content+=`<div class="msg-author"> ${msg.senderName}</div>`;
+if(msg.sender==='manager'&&msg.senderName)content+=`<div class="msg-author">👤 ${msg.senderName}</div>`;
 content+=`<div>${msg.text||''}</div>`;
 if(msg.files&&msg.files.length>0){msg.files.forEach(file=>{if(file.type.startsWith('image/'))content+=`<img src="${file.data}" class="msg-image" alt="Фото">`;else if(file.type.startsWith('video/'))content+=`<video src="${file.data}" class="msg-image" controls></video>`;else content+=`<a href="${file.data}" download="${file.name}" class="block mt-2 p-2 bg-white/10 rounded-lg text-xs sm:text-sm">📎 ${file.name}</a>`})}
 }
@@ -1010,10 +968,7 @@ container.scrollTop=container.scrollHeight;
 function handleManagerFileSelect(event){
 const files=Array.from(event.target.files);
 files.forEach(file=>{
-  if(file.size > 5 * 1024 * 1024){
-    alert('Файл слишком большой! Максимум 5MB');
-    return;
-  }
+  if(file.size > 5 * 1024 * 1024){alert('Файл слишком большой! Максимум 5MB');return}
   const reader=new FileReader();
   reader.onload=function(e){managerSelectedFiles.push({name:file.name,type:file.type,data:e.target.result});renderManagerFilePreview()};
   reader.readAsDataURL(file);
@@ -1029,7 +984,7 @@ const div=document.createElement('div');
 div.className='msg-preview';
 if(file.type.startsWith('image/'))div.innerHTML=`<img src="${file.data}"><span class="remove-preview" onclick="removeManagerFile(${index})">×</span>`;
 else if(file.type.startsWith('video/'))div.innerHTML=`<video src="${file.data}"></video><span class="remove-preview" onclick="removeManagerFile(${index})">×</span>`;
-else div.innerHTML=`<div class="text-xs p-2 bg-white/10 rounded">📎 ${file.name}</div><span class="remove-preview" onclick="removeManagerFile(${index})">×</span>`;
+else div.innerHTML=`<div class="text-xs p-2 bg-white/10 rounded"> ${file.name}</div><span class="remove-preview" onclick="removeManagerFile(${index})">×</span>`;
 preview.appendChild(div);
 });
 }
@@ -1042,48 +997,25 @@ if(!currentChatId)return;
 const input=document.getElementById('managerChatInput');
 const text=input.value.trim();
 if(!text&&managerSelectedFiles.length===0)return;
-
 const chat = allChatsCache[currentChatId];
 if(!chat)return;
-
 const senderName=currentRole==='admin'?'Администратор':'Модератор';
-const msg={
-  id: Date.now().toString(),
-  sender:'manager',
-  senderName:senderName,
-  text:text,
-  files:[...managerSelectedFiles],
-  time:new Date().toISOString()
-};
-
+const msg={id:Date.now().toString(),sender:'manager',senderName:senderName,text:text,files:[...managerSelectedFiles],time:new Date().toISOString()};
 chatsRef.child(currentChatId+'/messages').push(msg);
-
-const updates = {
-  lastMessage: new Date().toISOString()
-};
+const updates = {lastMessage: new Date().toISOString()};
 if(chat.status==='pending'){
   updates.status = 'accepted';
   updates.statusText = 'Принято';
-  // Системное сообщение о автопринятии
-  chatsRef.child(currentChatId+'/messages').push({
-    id: (Date.now()+1).toString(),
-    sender: 'system',
-    systemText: '✅ Чат автоматически принят',
-    time: new Date().toISOString()
-  });
+  chatsRef.child(currentChatId+'/messages').push({id:(Date.now()+1).toString(),sender:'system',systemText:'✅ Чат автоматически принят',time:new Date().toISOString()});
 }
 chatsRef.child(currentChatId).update(updates);
-
 input.value='';
 managerSelectedFiles=[];
 document.getElementById('managerFilePreview').innerHTML='';
 }
 
-// ============================================================
-// НАСТРОЙКИ
-// ============================================================
 function openSettings(){
-if(currentRole!=='admin'){alert('⚠️ Настройки только для админа!');return}
+if(currentRole!=='admin'){alert('️ Настройки только для админа!');return}
 document.getElementById('settingsModal').classList.add('active');
 loadSettingsUI();
 }
@@ -1116,7 +1048,7 @@ const s=getSettings();
 s.twoFactorEnabled=true;
 s.twoFactorCode=code;
 saveSettings(s);
-alert('✅ 2FA включена! Если забудете код, сможете войти только по паролю.');
+alert('✅ 2FA включена! Если забудете код, сможете войти только по паролю (5 попыток).');
 }
 
 function renderModeratorsList(){
@@ -1129,7 +1061,7 @@ if(s.moderators.length===0)list.innerHTML='<p class="text-xs sm:text-sm text-gra
 s.moderators.forEach((mod,index)=>{
 const div=document.createElement('div');
 div.className='moderator-item';
-div.innerHTML=`<span class="text-xs sm:text-sm font-bold text-gray-400">#${index+1}</span><input type="text" placeholder="Имя" value="${mod.name||''}" onchange="updateModerator(${index},'name',this.value)"><input type="text" placeholder="Пароль" value="${mod.password||''}" onchange="updateModerator(${index},'password',this.value)"><button onclick="removeModerator(${index})" class="modal-btn modal-btn-danger" style="width:auto;margin:0;padding:6px 10px;font-size:12px">️</button>`;
+div.innerHTML=`<span class="text-xs sm:text-sm font-bold text-gray-400">#${index+1}</span><input type="text" placeholder="Имя" value="${mod.name||''}" onchange="updateModerator(${index},'name',this.value)"><input type="text" placeholder="Пароль" value="${mod.password||''}" onchange="updateModerator(${index},'password',this.value)"><button onclick="removeModerator(${index})" class="modal-btn modal-btn-danger" style="width:auto;margin:0;padding:6px 10px;font-size:12px">🗑️</button>`;
 list.appendChild(div);
 });
 }
@@ -1157,9 +1089,6 @@ saveSettings(s);
 renderModeratorsList();
 }
 
-// ============================================================
-// УТИЛИТЫ
-// ============================================================
 function formatTime(isoString){
 if(!isoString) return '—';
 const date=new Date(isoString);
