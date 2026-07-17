@@ -9,13 +9,19 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
-:root{--accent:#FF0055;--accent2:#7000FF;--cyan:#00F0FF;--bg:#0a0a0b;--card:#111113;--card2:#18181b;--border:rgba(255,255,255,.06);--text:#a1a1aa;--text-bright:#fafafa}
+:root{--accent:#FF0055;--accent2:#7000FF;--cyan:#00F0FF;--bg:#0a0a0b;--card:#141416;--card2:#1a1a1e;--border:rgba(255,255,255,.12);--text:#e4e4e7;--text-bright:#ffffff;--text-dim:#a1a1aa;--font-size:14px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;overflow-x:hidden}
+html{scroll-behavior:smooth;font-size:var(--font-size)}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+p,span,div,a,li,label,input,textarea,button,h1,h2,h3,h4,h5,h6{color:inherit}
+a{color:var(--text-bright)}
+p{color:var(--text-bright)}
+span{color:var(--text-bright)}
+li{color:var(--text-bright)}
+label{color:var(--text-bright)}
 
 /* Typography */
-h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
+h1,h2,h3,h4,h5,h6{color:var(--text-bright)!important;font-weight:700;line-height:1.25;-webkit-font-smoothing:antialiased}
 
 /* Scrollbar */
 ::-webkit-scrollbar{width:6px}
@@ -27,11 +33,11 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
 @media(min-width:1024px){.blog-layout{grid-template-columns:1fr 320px;padding:0 24px}}
 
 /* Card */
-.blog-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s ease}
-.blog-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-2px)}
+.blog-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s ease;-webkit-font-smoothing:antialiased}
+.blog-card:hover{border-color:rgba(255,255,255,.18);transform:translateY(-2px)}
 
 /* Tags */
-.tag{display:inline-flex;align-items:center;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border:1px solid var(--border);transition:all .3s;cursor:pointer;background:transparent;color:var(--text)}
+.tag{display:inline-flex;align-items:center;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border:1px solid var(--border);transition:all .3s;cursor:pointer;background:transparent;color:var(--text-bright)}
 .tag:hover,.tag.active{background:var(--accent);border-color:var(--accent);color:#fff}
 
 /* Live pulse */
@@ -40,7 +46,7 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
 @keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,0,85,.6)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(255,0,85,0)}}
 
 /* Sidebar */
-.sidebar-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+.sidebar-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;-webkit-font-smoothing:antialiased}
 
 /* Gradient text */
 .gradient-text{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -53,27 +59,27 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
 @media(min-width:640px){.service-row{grid-template-columns:1fr 1fr}}
 
 /* Search */
-.search-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;color:#fff;font-size:14px;width:100%;transition:all .3s;font-family:inherit}
+.search-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text-bright);font-size:14px;width:100%;transition:all .3s;font-family:inherit;-webkit-font-smoothing:antialiased}
 .search-box:focus{outline:none;border-color:var(--accent)}
-.search-box::placeholder{color:#52525b}
+.search-box::placeholder{color:var(--text-dim)}
 
 /* Platform pill */
-.plat-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;border:1px solid var(--border);transition:all .3s;cursor:pointer;background:transparent;color:var(--text)}
+.plat-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;border:1px solid var(--border);transition:all .3s;cursor:pointer;background:transparent;color:var(--text-bright)}
 .plat-pill.on{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
 
 /* Buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;transition:all .3s;border:none;font-family:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;transition:all .3s;border:none;font-family:inherit;-webkit-font-smoothing:antialiased}
 .btn-accent{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
 .btn-accent:hover{opacity:.9;transform:translateY(-1px)}
-.btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--border)}
-.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.08);color:var(--text-bright);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.15);color:#fff}
 .btn-sm{padding:6px 14px;font-size:12px;border-radius:8px}
 
 /* Post content */
-.post-body{font-size:15px;line-height:1.8;color:#d4d4d8}
-.post-body p{margin-bottom:16px}
+.post-body{font-size:15px;line-height:1.8;color:var(--text-bright)!important}
+.post-body p{color:var(--text-bright)!important;margin-bottom:16px}
 .post-body ul{margin:12px 0;padding-left:20px}
-.post-body li{margin-bottom:6px}
+.post-body li{color:var(--text-bright)!important;margin-bottom:6px}
 
 /* Chat widget */
 .chat-fab{position:fixed;bottom:24px;right:24px;z-index:1000;width:48px;height:48px;border-radius:50%;background:#1a1a1e;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:all .3s}
@@ -81,25 +87,25 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
 .chat-fab svg{width:20px;height:20px;color:#fff}
 
 /* Chat panel */
-.chat-panel{position:fixed;bottom:92px;right:24px;width:380px;max-height:560px;background:var(--card);border:1px solid var(--border);border-radius:20px;display:none;flex-direction:column;overflow:hidden;z-index:999;box-shadow:0 24px 64px rgba(0,0,0,.5)}
+.chat-panel{position:fixed;bottom:92px;right:24px;width:380px;max-height:560px;background:var(--card);border:1px solid var(--border);border-radius:20px;display:none;flex-direction:column;overflow:hidden;z-index:999;box-shadow:0 24px 64px rgba(0,0,0,.5);-webkit-font-smoothing:antialiased}
 .chat-panel.open{display:flex;animation:chatSlide .3s ease-out}
 @keyframes chatSlide{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:480px){.chat-panel{right:8px;left:8px;bottom:80px;width:auto;max-height:calc(100vh - 100px);border-radius:16px}}
 
 /* Chat messages */
-.msg{max-width:82%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;word-wrap:break-word}
+.msg{max-width:82%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;word-wrap:break-word;-webkit-font-smoothing:antialiased}
 .msg.client{background:linear-gradient(135deg,var(--accent),#ff4d6d);align-self:flex-end;border-bottom-right-radius:4px;color:#fff}
-.msg.manager{background:rgba(255,255,255,.07);align-self:flex-start;border-bottom-left-radius:4px}
-.msg.system{background:rgba(255,255,255,.03);align-self:center;text-align:center;font-size:11px;padding:6px 14px;border-radius:10px;color:#71717a}
-.msg-time{font-size:10px;opacity:.5;margin-top:4px}
-.msg-author{font-size:10px;font-weight:600;opacity:.7;margin-bottom:3px}
+.msg.manager{background:rgba(255,255,255,.12);align-self:flex-start;border-bottom-left-radius:4px;color:var(--text-bright)}
+.msg.system{background:rgba(255,255,255,.06);align-self:center;text-align:center;font-size:11px;padding:6px 14px;border-radius:10px;color:var(--text-bright)}
+.msg-time{font-size:10px;opacity:.7;margin-top:4px}
+.msg-author{font-size:10px;font-weight:600;opacity:1;margin-bottom:3px}
 .msg-image{max-width:100%;border-radius:10px;margin-top:6px;max-height:180px;object-fit:cover}
 
 /* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:3000;display:none;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.active{display:flex}
-.modal-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto}
-.modal-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:#fff;font-size:14px;margin-bottom:10px;font-family:inherit}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;max-width:440px;width:100%;max-height:90vh;overflow-y:auto;-webkit-font-smoothing:antialiased}
+.modal-input{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text-bright);font-size:14px;margin-bottom:10px;font-family:inherit;-webkit-font-smoothing:antialiased}
 .modal-input:focus{outline:none;border-color:var(--accent)}
 
 /* Manager panel */
@@ -120,38 +126,45 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* Themes */
-[data-theme="light"]{--bg:#f5f5f5;--card:#fff;--card2:#fafafa;--border:rgba(0,0,0,.08);--text:#525252;--text-bright:#171717}
-[data-theme="light"] body{background:var(--bg);color:var(--text)}
-[data-theme="light"] header{background:rgba(245,245,245,.9)!important;border-color:rgba(0,0,0,.06)!important}
-[data-theme="light"] .search-box{color:#171717}
-[data-theme="light"] .search-box::placeholder{color:#a3a3a3}
-[data-theme="light"] .msg.manager{background:rgba(0,0,0,.06);color:#171717}
-[data-theme="light"] .msg.system{background:rgba(0,0,0,.03);color:#737373}
-[data-theme="light"] .chat-panel{background:#fff;border-color:rgba(0,0,0,.1)}
-[data-theme="light"] .modal-box{background:#fff;border-color:rgba(0,0,0,.1)}
-[data-theme="light"] .modal-input{color:#171717;background:rgba(0,0,0,.04)}
-[data-theme="light"] .sidebar-card{background:#fff;border-color:rgba(0,0,0,.08)}
-[data-theme="light"] .blog-card{background:#fff;border-color:rgba(0,0,0,.08)}
-[data-theme="light"] .blog-card:hover{border-color:rgba(0,0,0,.15)}
-[data-theme="light"] h1,h2,h3,h4,h5,h6{color:#171717}
-[data-theme="light"] .post-body{color:#404040}
-[data-theme="light"] .chat-fab{background:#1a1a1e;border-color:rgba(0,0,0,.1)}
+[data-theme="light"]{--bg:#f5f5f5;--card:#fff;--card2:#fafafa;--border:rgba(0,0,0,.12);--text:#171717;--text-bright:#000000;--text-dim:#525252}
+[data-theme="light"] body{background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+[data-theme="light"] header{background:rgba(245,245,245,.95)!important;border-color:rgba(0,0,0,.1)!important}
+[data-theme="light"] .search-box{color:#171717;background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.15)}
+[data-theme="light"] .search-box::placeholder{color:#525252}
+[data-theme="light"] .msg.manager{background:rgba(0,0,0,.07);color:#171717}
+[data-theme="light"] .msg.system{background:rgba(0,0,0,.04);color:#404040}
+[data-theme="light"] .chat-panel{background:#fff;border-color:rgba(0,0,0,.12)}
+[data-theme="light"] .modal-box{background:#fff;border-color:rgba(0,0,0,.12)}
+[data-theme="light"] .modal-input{color:#171717;background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.12)}
+[data-theme="light"] .sidebar-card{background:#fff;border-color:rgba(0,0,0,.12)}
+[data-theme="light"] .blog-card{background:#fff;border-color:rgba(0,0,0,.12)}
+[data-theme="light"] .blog-card:hover{border-color:rgba(0,0,0,.2)}
+[data-theme="light"] h1,h2,h3,h4,h5,h6{color:#000000}
+[data-theme="light"] .post-body{color:#171717}
+[data-theme="light"] .chat-fab{background:#1a1a1e;border-color:rgba(0,0,0,.12)}
+[data-theme="light"] .btn-ghost{background:rgba(0,0,0,.05);color:#171717;border-color:rgba(0,0,0,.12)}
+[data-theme="light"] .btn-ghost:hover{background:rgba(0,0,0,.1);color:#000}
+[data-theme="light"] .tag{color:#171717;border-color:rgba(0,0,0,.15)}
+[data-theme="light"] .plat-pill{color:#171717;border-color:rgba(0,0,0,.15)}
 
-[data-theme="blue"]{--bg:#0a1628;--card:#0f1f35;--card2:#132742;--border:rgba(59,130,246,.12);--text:#94a3b8;--text-bright:#f1f5f9}
-[data-theme="blue"] body{background:var(--bg);background-image:radial-gradient(circle at 20% 50%,rgba(59,130,246,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(139,92,246,.06) 0%,transparent 40%)}
-[data-theme="blue"] header{background:rgba(10,22,40,.9)!important;border-color:rgba(59,130,246,.1)!important}
-[data-theme="blue"] .search-box{border-color:rgba(59,130,246,.15)}
+[data-theme="blue"]{--bg:#0a1628;--card:#0f1f35;--card2:#132742;--border:rgba(59,130,246,.18);--text:#e2e8f0;--text-bright:#ffffff;--text-dim:#94a3b8}
+[data-theme="blue"] body{background:var(--bg);background-image:radial-gradient(circle at 20% 50%,rgba(59,130,246,.1) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(139,92,246,.08) 0%,transparent 40%);-webkit-font-smoothing:antialiased}
+[data-theme="blue"] header{background:rgba(10,22,40,.95)!important;border-color:rgba(59,130,246,.15)!important}
+[data-theme="blue"] .search-box{border-color:rgba(59,130,246,.25);color:var(--text-bright)}
 [data-theme="blue"] .search-box:focus{border-color:#3b82f6}
 [data-theme="blue"] .tag:hover,.tag.active{background:#3b82f6;border-color:#3b82f6}
 [data-theme="blue"] .btn-accent{background:linear-gradient(135deg,#3b82f6,#8b5cf6)}
 [data-theme="blue"] .plat-pill.on{background:linear-gradient(135deg,#3b82f6,#8b5cf6)}
-[data-theme="blue"] .chat-fab{background:#132742;border-color:rgba(59,130,246,.2)}
+[data-theme="blue"] .chat-fab{background:#132742;border-color:rgba(59,130,246,.3)}
+[data-theme="blue"] .btn-ghost{background:rgba(59,130,246,.1);color:var(--text-bright);border-color:rgba(59,130,246,.2)}
+[data-theme="blue"] .btn-ghost:hover{background:rgba(59,130,246,.2);color:#fff}
+[data-theme="blue"] .msg.manager{background:rgba(59,130,246,.1);color:var(--text-bright)}
 
-/* Settings panel */
-.settings-fab{position:fixed;bottom:24px;left:24px;z-index:1000;width:40px;height:40px;border-radius:50%;background:#1a1a1e;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:all .3s}
-.settings-fab:hover{transform:scale(1.1);background:#222226}
-[data-theme="light"] .settings-fab{background:#e5e5e5;border-color:rgba(0,0,0,.1)}
-[data-theme="blue"] .settings-fab{background:#132742;border-color:rgba(59,130,246,.2)}
+/* Settings icon in header */
+.settings-icon{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
+.settings-icon:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
+[data-theme="light"] .settings-icon{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.12)}
+[data-theme="blue"] .settings-icon{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.2)}
 
 /* Mobile nav */
 @media(max-width:640px){
@@ -210,6 +223,9 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
         <span class="w-2 h-2 rounded-full bg-zinc-600" id="navDot"></span>
         <span class="text-[9px] font-bold uppercase tracking-widest text-zinc-500" id="navText">offline</span>
       </div>
+      <div class="settings-icon" onclick="openUserSettings()" title="Settings">
+        <svg width="16" height="16" fill="none" stroke="#a1a1aa" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
       <a href="https://www.donationalerts.com/r/maksimLive007" target="_blank" class="btn btn-accent btn-sm gap-1.5" style="padding:7px 14px">
         <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         <span class="hidden sm:inline">Donate</span>
@@ -239,13 +255,13 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
       <article class="blog-card fade-in" style="margin-bottom:20px">
         <div class="p-5 sm:p-6">
           <div class="flex items-center gap-2 mb-3">
-            <span class="tag active btn-sm" style="cursor:default">About</span>
-            <span class="text-xs text-zinc-600">Personal</span>
+            <span class="tag active btn-sm" style="cursor:default" data-i18n="about">About</span>
+            <span class="text-xs text-zinc-300" data-i18n="personal">Personal</span>
           </div>
-          <h2 class="text-lg sm:text-xl font-bold mb-3">Привет, я <span style="color:var(--accent)">MaksimLive007</span></h2>
+          <h2 class="text-lg sm:text-xl font-bold mb-3"><span data-i18n="hello">Привет, я</span> <span style="color:var(--accent)">MaksimLive007</span></h2>
           <div class="post-body">
-            <p>Стример, фотограф, создатель контента. Стримлю на Twitch, снимаю видео для YouTube и TikTok, делаю фотосессии. Здесь — мой личный блог, где я делюсь мыслями, проектами и тем, чем занимаюсь.</p>
-            <p>Если хочешь пообщаться или заказать услугу — пиши в чат или ВКонтакте. Подписывайся на каналы, чтобы не пропустить новые посты и стримы.</p>
+            <p data-i18n="aboutText1">Стример, фотограф, создатель контента. Стримлю на Twitch, снимаю видео для YouTube и TikTok, делаю фотосессии. Здесь — мой личный блог, где я делюсь мыслями, проектами и тем, чем занимаюсь.</p>
+            <p data-i18n="aboutText2">Если хочешь пообщаться или заказать услугу — пиши в чат или ВКонтакте. Подписывайся на каналы, чтобы не пропустить новые посты и стримы.</p>
           </div>
           <div class="flex flex-wrap gap-2 mt-4">
             <a href="https://twitch.tv/MaksimLive007" target="_blank" class="btn btn-ghost btn-sm gap-1.5">
@@ -264,19 +280,32 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
         </div>
       </article>
 
-      <!-- Post: Stream schedule -->
+      <!-- Stream + Chat -->
       <article class="blog-card fade-in" style="margin-bottom:20px">
-        <div class="p-5 sm:p-6">
+        <div class="p-4 sm:p-5">
           <div class="flex items-center gap-2 mb-3">
-            <span class="tag btn-sm" style="cursor:default;border-color:rgba(112,0,255,.3);color:#a78bfa;background:rgba(112,0,255,.1)">Stream</span>
-            <span class="text-xs text-zinc-600">Schedule</span>
+            <span class="tag btn-sm" style="cursor:default;border-color:rgba(112,0,255,.3);color:#a78bfa;background:rgba(112,0,255,.1)" data-i18n="stream">Stream</span>
+            <span class="text-xs text-zinc-300" data-i18n="liveOnTwitch">Прямой эфир на Twitch</span>
           </div>
-          <h2 class="text-lg sm:text-xl font-bold mb-3">Расписание стримов</h2>
-          <div class="post-body">
-            <p>Стримлю регулярно на Twitch. Основные дни — будние вечера. Подписывайся на Telegram-канал, чтобы получать уведомления о начале эфира.</p>
-          </div>
-          <div class="stream-embed" style="aspect-ratio:16/9;margin-top:16px">
-            <iframe id="twitchChat" class="w-full h-full" src=""></iframe>
+          <div class="grid gap-3" style="grid-template-columns:1fr">
+            <!-- Desktop: 2 columns -->
+            <div class="hidden md:grid gap-3" style="grid-template-columns:1fr 340px">
+              <div class="stream-embed" style="aspect-ratio:16/9">
+                <iframe id="twitchPlayer" class="w-full h-full" src="" allowfullscreen></iframe>
+              </div>
+              <div class="stream-embed" style="aspect-ratio:9/16;max-height:500px">
+                <iframe id="twitchChatEmbed" class="w-full h-full" src=""></iframe>
+              </div>
+            </div>
+            <!-- Mobile: stacked -->
+            <div class="md:hidden grid gap-3">
+              <div class="stream-embed" style="aspect-ratio:16/9">
+                <iframe id="twitchPlayerMobile" class="w-full h-full" src="" allowfullscreen></iframe>
+              </div>
+              <div class="stream-embed" style="height:300px">
+                <iframe id="twitchChatMobile" class="w-full h-full" src=""></iframe>
+              </div>
+            </div>
           </div>
         </div>
       </article>
@@ -285,12 +314,12 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
       <article class="blog-card fade-in" style="margin-bottom:20px">
         <div class="p-5 sm:p-6">
           <div class="flex items-center gap-2 mb-3">
-            <span class="tag btn-sm" style="cursor:default;border-color:rgba(236,72,153,.3);color:#f472b6;background:rgba(236,72,153,.1)">Services</span>
-            <span class="text-xs text-zinc-600">Photography & Video</span>
+            <span class="tag btn-sm" style="cursor:default;border-color:rgba(236,72,153,.3);color:#f472b6;background:rgba(236,72,153,.1)" data-i18n="services">Services</span>
+            <span class="text-xs text-zinc-300" data-i18n="photography">Photography & Video</span>
           </div>
-          <h2 class="text-lg sm:text-xl font-bold mb-3">Услуги</h2>
+          <h2 class="text-lg sm:text-xl font-bold mb-3" data-i18n="myServices">Услуги</h2>
           <div class="post-body">
-            <p>Фотосессии, монтаж видео, коллаборации. Все подробности — в карточках ниже.</p>
+            <p data-i18n="servicesText">Фотосессии, монтаж видео, коллаборации. Все подробности — в карточках ниже.</p>
           </div>
         </div>
       </article>
@@ -303,25 +332,25 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
         <article class="blog-card fade-in">
           <div class="p-5">
             <div class="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-3" style="background:rgba(255,0,85,.1)">🖱️</div>
-            <h3 class="font-bold text-base mb-2">Кликер</h2>
-            <p class="text-sm text-zinc-500 mb-4">Мой проект. Кликай и ставь рекорды!</p>
-            <a href="https://klik-klan-scm6.onrender.com" target="_blank" class="btn btn-accent w-full">Играть</a>
+            <h3 class="font-bold text-base mb-2" data-i18n="clicker">Кликер</h2>
+            <p class="text-sm text-zinc-300 mb-4" data-i18n="clickerText">Мой проект. Кликай и ставь рекорды!</p>
+            <a href="https://klik-klan-scm6.onrender.com" target="_blank" class="btn btn-accent w-full" data-i18n="play">Играть</a>
           </div>
         </article>
         <article class="blog-card fade-in">
           <div class="p-5">
             <div class="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-3" style="background:rgba(34,197,94,.1)">⛏️</div>
             <h3 class="font-bold text-base mb-2">Minecraft</h2>
-            <p class="text-sm text-zinc-500 mb-4">Напиши «добавь меня белый список» в Telegram-канал!</p>
-            <a href="https://t.me/buildingsinMine" target="_blank" class="btn w-full" style="background:linear-gradient(135deg,#22c55e,#059669);color:#fff">Перейти в Telegram</a>
+            <p class="text-sm text-zinc-300 mb-4" data-i18n="minecraftText">Напиши «добавь меня белый список» в Telegram-канал!</p>
+            <a href="https://t.me/buildingsinMine" target="_blank" class="btn w-full" style="background:linear-gradient(135deg,#22c55e,#059669);color:#fff" data-i18n="goToTelegram">Перейти в Telegram</a>
           </div>
         </article>
         <article class="blog-card fade-in">
           <div class="p-5">
             <div class="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-3" style="background:rgba(59,130,246,.1)">🎮</div>
             <h3 class="font-bold text-base mb-2">Steam</h2>
-            <p class="text-sm text-zinc-500 mb-4">Мой профиль и достижения.</p>
-            <a href="https://steamcommunity.com/profiles/76561199128139673/" target="_blank" class="btn btn-ghost w-full">Открыть профиль</a>
+            <p class="text-sm text-zinc-300 mb-4" data-i18n="steamText">Мой профиль и достижения.</p>
+            <a href="https://steamcommunity.com/profiles/76561199128139673/" target="_blank" class="btn btn-ghost w-full" data-i18n="openProfile">Открыть профиль</a>
           </div>
         </article>
       </div>
@@ -330,8 +359,8 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
     <!-- TAB: SERVICES -->
     <div id="tab-services" class="tab-panel" style="display:none">
       <div class="mb-6">
-        <h2 class="text-lg font-bold mb-1">Мои услуги</h2>
-        <p class="text-sm text-zinc-500">Напишите ВКонтакте для заказа</p>
+        <h2 class="text-lg font-bold mb-1" data-i18n="myServices">Мои услуги</h2>
+        <p class="text-sm text-zinc-300" data-i18n="orderVk">Напишите ВКонтакте для заказа</p>
       </div>
       <h3 class="text-sm font-semibold mb-3 flex items-center gap-2" style="color:#f472b6">
         <span class="w-1 h-4 rounded-full" style="background:linear-gradient(180deg,#ec4899,#a855f7)"></span>
@@ -441,55 +470,55 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
 
     <!-- TAB: SOCIAL -->
     <div id="tab-social" class="tab-panel" style="display:none">
-      <h2 class="text-lg font-bold mb-4">Мои каналы</h2>
+      <h2 class="text-lg font-bold mb-4" data-i18n="myChannels">Мои каналы</h2>
       <div class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
         <a href="https://twitch.tv/MaksimLive007" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(167,139,250,.1)">
             <svg width="22" height="22" fill="#a78bfa" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-purple-400 transition">Twitch</h3><p class="text-xs text-zinc-500 truncate">Прямые эфиры</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-purple-400 transition">Twitch</h3><p class="text-xs text-zinc-300 truncate" data-i18n="liveStreams">Прямые эфиры</p></div>
         </a>
         <a href="https://www.youtube.com/channel/UCEBTFu4B4NevkLbk1Y5QT5w" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(248,113,113,.1)">
             <svg width="22" height="22" fill="#f87171" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-red-400 transition">YouTube</h3><p class="text-xs text-zinc-500 truncate">Видео и нарезки</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-red-400 transition">YouTube</h3><p class="text-xs text-zinc-300 truncate" data-i18n="videosClips">Видео и нарезки</p></div>
         </a>
         <a href="https://t.me/maksimLive007_twitch" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(56,189,248,.1)">
             <svg width="22" height="22" fill="#38bdf8" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-sky-400 transition">Telegram</h3><p class="text-xs text-zinc-500 truncate">Канал и новости</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-sky-400 transition">Telegram</h3><p class="text-xs text-zinc-300 truncate" data-i18n="channelNews">Канал и новости</p></div>
         </a>
         <a href="https://vk.com/maksimlive007" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(96,165,250,.1)">
             <svg width="22" height="22" fill="#60a5fa" viewBox="0 0 24 24"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.69 17.123h-1.744c-.66 0-.862-.523-2.049-1.714-1.033-1.033-1.49-1.171-1.744-1.171-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4 8.673 4 8.231c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.049.17.491-.085.745-.576.745z"/></svg>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-blue-400 transition">VKontakte</h3><p class="text-xs text-zinc-500 truncate">Личная страница</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-blue-400 transition">VKontakte</h3><p class="text-xs text-zinc-300 truncate" data-i18n="personalPage">Личная страница</p></div>
         </a>
         <a href="https://vk.com/club230785877" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(96,165,250,.1)">
             <svg width="22" height="22" fill="#60a5fa" viewBox="0 0 24 24"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.69 17.123h-1.744c-.66 0-.862-.523-2.049-1.714-1.033-1.033-1.49-1.171-1.744-1.171-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4 8.673 4 8.231c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.049.17.491-.085.745-.576.745z"/></svg>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-blue-400 transition">Фотосессии VK</h3><p class="text-xs text-zinc-500 truncate">Запись на съемку</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-blue-400 transition">Фотосессии VK</h3><p class="text-xs text-zinc-300 truncate" data-i18n="booking">Запись на съемку</p></div>
         </a>
         <a href="https://www.tiktok.com/@maksimlive007_twitch" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(244,114,182,.1)">
             <svg width="22" height="22" fill="#f472b6" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-pink-400 transition">TikTok</h3><p class="text-xs text-zinc-500 truncate">Короткие видео</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-pink-400 transition">TikTok</h3><p class="text-xs text-zinc-300 truncate" data-i18n="shortVideos">Короткие видео</p></div>
         </a>
         <a href="https://max.ru/join/imRSCYkegJa-ro_OYhN-uCql-_LpPRJs41pgTK9VOSs" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(249,115,22,.1)">
             <span class="font-bold text-sm" style="color:#fb923c">MAX</span>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-orange-400 transition">MAX.RU</h3><p class="text-xs text-zinc-500 truncate">Эксклюзивный контент</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-orange-400 transition">MAX.RU</h3><p class="text-xs text-zinc-300 truncate" data-i18n="exclusive">Эксклюзивный контент</p></div>
         </a>
         <a href="https://www.donationalerts.com/r/maksimLive007" target="_blank" class="blog-card p-4 flex items-center gap-4 group">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:rgba(255,0,85,.1)">
             <svg width="22" height="22" fill="var(--accent)" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
           </div>
-          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-[var(--accent)] transition">DonationAlerts</h3><p class="text-xs text-zinc-500 truncate">Поддержать автора</p></div>
+          <div class="min-w-0"><h3 class="font-bold text-sm group-hover:text-[var(--accent)] transition">DonationAlerts</h3><p class="text-xs text-zinc-300 truncate" data-i18n="supportAuthor">Поддержать автора</p></div>
         </a>
       </div>
     </div>
@@ -505,7 +534,7 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
     <div class="sidebar-card text-center">
       <div class="w-16 h-16 rounded-2xl mx-auto mb-3 flex items-center justify-center font-black text-xl" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">M</div>
       <h3 class="text-base font-bold text-white mb-0.5">MaksimLive007</h3>
-      <p class="text-[11px] text-zinc-500 mb-3">Стример · Фотограф · Контент-мейкер</p>
+      <p class="text-[11px] text-zinc-300 mb-3" data-i18n="role">Стример · Фотограф · Контент-мейкер</p>
       <div class="flex justify-center gap-2">
         <a href="https://twitch.tv/MaksimLive007" target="_blank" class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(167,139,250,.1)">
           <svg width="14" height="14" fill="#a78bfa" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
@@ -575,16 +604,11 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
 
 <!-- FOOTER -->
 <footer class="border-t py-6 text-center" style="border-color:var(--border)">
-  <p class="text-xs text-zinc-600">&copy; 2026 MaksimLive007. Made with care for the community.</p>
-  <button onclick="openLoginModal()" class="mt-2 text-[10px] text-zinc-700 hover:text-zinc-400 transition">Manager</button>
+  <p class="text-xs text-zinc-500">&copy; 2026 MaksimLive007. <span data-i18n="footer">Made with care for the community.</span></p>
+  <button onclick="openLoginModal()" class="mt-2 text-[10px] text-zinc-600 hover:text-zinc-300 transition" data-i18n="manager">Manager</button>
 </footer>
 
-<!-- SETTINGS FAB -->
-<div class="settings-fab" onclick="openUserSettings()" title="Настройки">
-  <svg width="18" height="18" fill="none" stroke="#a1a1aa" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-</div>
-
-<!-- USER SETTINGS MODAL -->
+<!-- SETTINGS MODAL (moved to header) -->
 <div id="userSettingsModal" class="modal-overlay">
   <div class="modal-box">
     <div class="flex items-center justify-between mb-5">
@@ -600,16 +624,31 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
       <div class="flex gap-2">
         <button onclick="setTheme('dark')" class="theme-btn flex-1 p-3 rounded-xl border text-center transition" data-theme-btn="dark" style="border-color:var(--border)">
           <div class="w-8 h-8 rounded-lg mx-auto mb-1.5" style="background:#0a0a0b;border:1px solid rgba(255,255,255,.1)"></div>
-          <span class="text-[11px] text-zinc-400">Dark</span>
+          <span class="text-[11px] text-zinc-300">Dark</span>
         </button>
         <button onclick="setTheme('light')" class="theme-btn flex-1 p-3 rounded-xl border text-center transition" data-theme-btn="light" style="border-color:var(--border)">
           <div class="w-8 h-8 rounded-lg mx-auto mb-1.5" style="background:#f5f5f5;border:1px solid rgba(0,0,0,.1)"></div>
-          <span class="text-[11px] text-zinc-400">Light</span>
+          <span class="text-[11px] text-zinc-300">Light</span>
         </button>
         <button onclick="setTheme('blue')" class="theme-btn flex-1 p-3 rounded-xl border text-center transition" data-theme-btn="blue" style="border-color:var(--border)">
           <div class="w-8 h-8 rounded-lg mx-auto mb-1.5" style="background:#0a1628;border:1px solid rgba(59,130,246,.2)"></div>
-          <span class="text-[11px] text-zinc-400">Blue</span>
+          <span class="text-[11px] text-zinc-300">Blue</span>
         </button>
+      </div>
+    </div>
+
+    <!-- Color palette -->
+    <div class="mb-5">
+      <h3 class="font-semibold text-sm text-white mb-3" data-i18n="palette">Палитра цветов</h3>
+      <div class="flex flex-wrap gap-2" id="colorPalette">
+        <button onclick="setAccent('#FF0055','#7000FF')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#FF0055,#7000FF);border-color:transparent" data-accent="#FF0055"></button>
+        <button onclick="setAccent('#3b82f6','#8b5cf6')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-color:transparent" data-accent="#3b82f6"></button>
+        <button onclick="setAccent('#10b981','#06b6d4')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#10b981,#06b6d4);border-color:transparent" data-accent="#10b981"></button>
+        <button onclick="setAccent('#f59e0b','#ef4444')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border-color:transparent" data-accent="#f59e0b"></button>
+        <button onclick="setAccent('#ec4899','#f43f5e')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#ec4899,#f43f5e);border-color:transparent" data-accent="#ec4899"></button>
+        <button onclick="setAccent('#8b5cf6','#6366f1')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#8b5cf6,#6366f1);border-color:transparent" data-accent="#8b5cf6"></button>
+        <button onclick="setAccent('#06b6d4','#0ea5e9')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#06b6d4,#0ea5e9);border-color:transparent" data-accent="#06b6d4"></button>
+        <button onclick="setAccent('#ffffff','#a3a3a3')" class="w-9 h-9 rounded-full border-2 transition hover:scale-110" style="background:linear-gradient(135deg,#ffffff,#a3a3a3);border-color:transparent" data-accent="#ffffff"></button>
       </div>
     </div>
 
@@ -619,13 +658,24 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
       <div class="flex gap-2">
         <button onclick="setLang('ru')" class="lang-btn flex-1 p-3 rounded-xl border text-center transition" data-lang-btn="ru" style="border-color:var(--border)">
           <span class="text-lg mb-1 block">RU</span>
-          <span class="text-[11px] text-zinc-400">Русский</span>
+          <span class="text-[11px] text-zinc-300">Русский</span>
         </button>
         <button onclick="setLang('en')" class="lang-btn flex-1 p-3 rounded-xl border text-center transition" data-lang-btn="en" style="border-color:var(--border)">
           <span class="text-lg mb-1 block">EN</span>
-          <span class="text-[11px] text-zinc-400">English</span>
+          <span class="text-[11px] text-zinc-300">English</span>
         </button>
       </div>
+    </div>
+
+    <!-- Font size -->
+    <div class="mb-5">
+      <h3 class="font-semibold text-sm text-white mb-3" data-i18n="fontSize">Размер шрифта</h3>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-zinc-400">A</span>
+        <input type="range" id="fontSizeSlider" min="12" max="20" value="14" oninput="setFontSize(this.value)" style="flex:1;accent-color:var(--accent)">
+        <span class="text-lg text-zinc-400">A</span>
+      </div>
+      <p class="text-[11px] text-zinc-500 mt-1 text-center" id="fontSizeValue">14px</p>
     </div>
 
     <button onclick="closeUserSettings()" class="btn btn-ghost w-full" data-i18n="close">Закрыть</button>
@@ -690,7 +740,7 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
   <div class="flex flex-col md:flex-row h-full">
     <div class="w-full md:w-80 border-b md:border-b-0 flex flex-col" style="border-color:var(--border)">
       <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--border)">
-        <h2 class="text-base font-bold text-white">Чаты</h2>
+        <h2 class="text-base font-bold text-white" data-i18n="chats">Чаты</h2>
         <div class="flex gap-1">
           <button onclick="openSettings()" class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/5 transition" title="Настройки">
             <svg width="16" height="16" fill="none" stroke="#71717a" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -753,7 +803,7 @@ h1,h2,h3,h4,h5,h6{color:var(--text-bright);font-weight:700;line-height:1.25}
     <div class="mb-5">
       <h3 class="font-semibold text-sm text-white mb-2">Двухфакторная аутентификация</h3>
       <div class="flex items-center justify-between p-3 rounded-xl mb-3" style="background:rgba(255,255,255,.03)">
-        <span class="text-xs text-zinc-400">Включить 2FA</span>
+        <span class="text-xs text-zinc-300">Включить 2FA</span>
         <label class="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" id="twoFactorToggle" class="sr-only peer" onchange="toggleTwoFactor()">
           <div class="w-10 h-5 bg-zinc-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>
@@ -801,9 +851,53 @@ firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
 const chatsRef=db.ref('chats');
 
+// --- Network / Firebase status ---
+function showNotice(msg,type){
+  let n=document.getElementById('statusNotice');
+  if(!n){n=document.createElement('div');n.id='statusNotice';n.style.cssText='position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;display:none;max-width:90vw;text-align:center;backdrop-filter:blur(12px);transition:all .3s';document.body.appendChild(n)}
+  n.textContent=msg;
+  n.style.display='block';
+  if(type==='error'){n.style.background='rgba(239,68,68,.9)';n.style.color='#fff';n.style.border='1px solid rgba(239,68,68,.5)'}
+  else if(type==='ok'){n.style.background='rgba(34,197,94,.9)';n.style.color='#fff';n.style.border='1px solid rgba(34,197,94,.5)'}
+  else{n.style.background='rgba(234,179,8,.9)';n.style.color='#000';n.style.border='1px solid rgba(234,179,8,.5)'}
+  clearTimeout(n._timer);
+  n._timer=setTimeout(()=>{n.style.display='none'},4000);
+}
+
+// Internet check
+window.addEventListener('online',()=>{showNotice('Internet подключен','ok')});
+window.addEventListener('offline',()=>{showNotice('Нет подключения к интернету!','error')});
+if(!navigator.onLine)showNotice('Нет подключения к интернету!','error');
+
+// Firebase connection
+let firebaseReady=false;
+setTimeout(()=>{firebaseReady=true},3000);
+db.ref('.info/connected').on('value',(snap)=>{
+  if(snap.val()===true){
+    const n=document.getElementById('statusNotice');if(n)n.style.display='none';
+  }else if(firebaseReady){
+    showNotice('Сервер не отвечает. Проверьте подключение.','error');
+  }
+});
+
 const CHANNEL_NAME='MaksimLive007';
 const TWITCH_PROXY_URL='https://api.rss2json.com/utils/twitch/channel/';
 const YOUTUBE_CHANNEL_ID='UCEBTFu4B4NevkLbk1Y5QT5w';
+
+// --- Twitch player ---
+if(window.location.protocol!=='file:'){
+  const h=window.location.hostname||'localhost';
+  const playerUrl=`https://player.twitch.tv/?channel=${CHANNEL_NAME}&parent=${h}&muted=true`;
+  const chatUrl=`https://www.twitch.tv/embed/${CHANNEL_NAME}/chat?darkpopout&parent=${h}`;
+  const tp=document.getElementById('twitchPlayer');
+  const tc=document.getElementById('twitchChatEmbed');
+  const tpm=document.getElementById('twitchPlayerMobile');
+  const tcm=document.getElementById('twitchChatMobile');
+  if(tp)tp.src=playerUrl;
+  if(tc)tc.src=chatUrl;
+  if(tpm)tpm.src=playerUrl;
+  if(tcm)tcm.src=chatUrl;
+}
 
 // --- Tab navigation ---
 const tabs=document.querySelectorAll('#blogNav .tag');
@@ -837,20 +931,29 @@ let failedAttempts=parseInt(localStorage.getItem('ml_failedAttempts')||'0');
 chatsRef.on('value',(snapshot)=>{
   const data=snapshot.val()||{};
   allChatsCache=data;
+  console.log('Firebase data:',Object.keys(allChatsCache).length,'chats');
   if(document.getElementById('chatPanel').classList.contains('open')){
     const chat=allChatsCache[clientId];
     if(chat){renderClientMessages(chat.messages||[]);updateChatStatus(chat);updateClientActions(chat)}
   }
+  // Always update manager panel if it exists
   if(document.getElementById('managerPanel').classList.contains('active')){
     renderChatList(document.getElementById('managerSearch').value);
     if(currentChatId&&allChatsCache[currentChatId])renderManagerMessages(allChatsCache[currentChatId].messages||[]);
   }
-});
+},(error)=>{console.error('Firebase read error:',error)});
 
 function toggleChat(){
   const w=document.getElementById('chatPanel');
   w.classList.toggle('open');
-  if(w.classList.contains('open'))loadClientChat();
+  if(w.classList.contains('open')){
+    loadClientChat();
+    // Force render after short delay
+    setTimeout(()=>{
+      const chat=allChatsCache[clientId];
+      if(chat)renderClientMessages(chat.messages||[]);
+    },500);
+  }
 }
 
 function loadClientChat(){
@@ -859,6 +962,8 @@ function loadClientChat(){
   const chat=allChatsCache[clientId];
   if(!chat){
     chatsRef.child(clientId).set({clientId,clientName:clientName||'Клиент '+clientId.slice(-6),status:'pending',statusText:'Ожидает',lastMessage:new Date().toISOString(),unread:0,messages:[]});
+    // Render welcome message immediately
+    renderClientMessages([]);
   }else{renderClientMessages(chat.messages||[]);updateChatStatus(chat);updateClientActions(chat)}
 }
 
@@ -888,7 +993,14 @@ function updateClientActions(chat){
 function renderClientMessages(messages){
   const c=document.getElementById('chatMessages');
   c.innerHTML='';
-  if(!messages||messages.length===0){c.innerHTML=`<div class="msg manager"><div>Здравствуйте, ${clientName||'гость'}! Чем могу помочь?</div><div class="msg-time">Сейчас</div></div>`;c.scrollTop=c.scrollHeight;return}
+  if(!messages||messages.length===0){
+    const welcome=document.createElement('div');
+    welcome.className='msg manager';
+    welcome.innerHTML=`<div>Здравствуйте, ${clientName||'гость'}! Чем могу помочь?</div><div class="msg-time">Сейчас</div>`;
+    c.appendChild(welcome);
+    c.scrollTop=c.scrollHeight;
+    return;
+  }
   messages.forEach(msg=>appendClientMessage(msg));
   c.scrollTop=c.scrollHeight;
 }
@@ -942,11 +1054,16 @@ function sendMessage(){
   const text=input.value.trim();
   if(!text&&selectedFiles.length===0)return;
   const chat=allChatsCache[clientId]||{clientId,clientName,status:'pending',statusText:'Ожидает',lastMessage:new Date().toISOString(),unread:0,messages:[]};
-  chatsRef.child(clientId+'/messages').push({id:Date.now().toString(),sender:'client',senderName:clientName,text,files:[...selectedFiles],time:new Date().toISOString()});
-  const updates={lastMessage:new Date().toISOString(),unread:(chat.unread||0)+1};
-  if(chat.status==='declined'||chat.status==='completed'){updates.status='pending';updates.statusText='Ожидает'}
-  chatsRef.child(clientId).update(updates);
+  const msg={id:Date.now().toString(),sender:'client',senderName:clientName,text,files:[...selectedFiles],time:new Date().toISOString()};
+  try{
+    chatsRef.child(clientId+'/messages').push(msg);
+    const updates={lastMessage:new Date().toISOString(),unread:(chat.unread||0)+1};
+    if(chat.status==='declined'||chat.status==='completed'){updates.status='pending';updates.statusText='Ожидает'}
+    chatsRef.child(clientId).update(updates);
+  }catch(e){console.error('Firebase write error:',e)}
   input.value='';selectedFiles=[];document.getElementById('filePreview').innerHTML='';
+  // Render message immediately
+  appendClientMessage(msg);
 }
 
 function formatTime(iso){if(!iso)return '—';const d=new Date(iso),now=new Date(),diff=now-d;if(diff<60000)return 'Сейчас';if(diff<3600000)return Math.floor(diff/60000)+' мин.';if(diff<86400000)return Math.floor(diff/3600000)+' ч.';return d.toLocaleDateString('ru-RU')}
@@ -980,27 +1097,63 @@ function check2FA(){
 function loginWithPasswordOnly(){if(failedAttempts>=5){failedAttempts=0;localStorage.setItem('ml_failedAttempts','0');closeLoginModal();openManagerPanel()}else if(confirm('Вход без 2FA?')){closeLoginModal();openManagerPanel()}}
 function backToPassword(){document.getElementById('loginStep2').style.display='none';document.getElementById('loginStep1').style.display='block';document.getElementById('login2FACode').value='';failedAttempts=0;localStorage.setItem('ml_failedAttempts','0')}
 
-function openManagerPanel(){document.getElementById('managerPanel').classList.add('active');renderChatList()}
-function closeManagerPanel(){document.getElementById('managerPanel').classList.remove('active');currentChatId=null}
+function openManagerPanel(){
+  document.getElementById('managerPanel').classList.add('active');
+  // Force re-read from Firebase every time
+  chatsRef.once('value',(snapshot)=>{
+    allChatsCache=snapshot.val()||{};
+    renderChatList();
+  });
+  // Also start live listener
+  chatsRef.on('value',(snap)=>{
+    allChatsCache=snap.val()||{};
+    renderChatList(document.getElementById('managerSearch').value);
+    if(currentChatId&&allChatsCache[currentChatId]){
+      renderManagerMessages(allChatsCache[currentChatId].messages||[]);
+      renderManagerActions(allChatsCache[currentChatId]);
+      document.getElementById('currentChatStatus').textContent=allChatsCache[currentChatId].status||'—';
+    }
+  });
+}
+function closeManagerPanel(){
+  document.getElementById('managerPanel').classList.remove('active');
+  currentChatId=null;
+  // Reset to normal listener
+  chatsRef.off();
+  chatsRef.on('value',(snapshot)=>{
+    const data=snapshot.val()||{};
+    allChatsCache=data;
+    if(document.getElementById('chatPanel').classList.contains('open')){
+      const chat=allChatsCache[clientId];
+      if(chat){renderClientMessages(chat.messages||[]);updateChatStatus(chat);updateClientActions(chat)}
+    }
+  },(error)=>{console.error('Firebase read error:',error)});
+}
 
 function renderChatList(search=''){
   const list=document.getElementById('chatList');
   list.innerHTML='';
   const chats=Object.values(allChatsCache);
-  const filtered=chats.filter(c=>c.clientName&&c.clientName.toLowerCase().includes(search.toLowerCase())).sort((a,b)=>new Date(b.lastMessage||0)-new Date(a.lastMessage||0));
-  if(!filtered.length){list.innerHTML='<div class="p-6 text-center text-zinc-600 text-sm">Нет чатов</div>';return}
+  const filtered=chats.filter(c=>{
+    if(!search)return true;
+    return(c.clientName||'').toLowerCase().includes(search.toLowerCase())||c.clientId.toLowerCase().includes(search.toLowerCase());
+  }).sort((a,b)=>new Date(b.lastMessage||0)-new Date(a.lastMessage||0));
+  if(!filtered.length){list.innerHTML='<div class="p-6 text-center text-zinc-500 text-sm">Нет чатов</div>';return}
   filtered.forEach(chat=>{
     const d=document.createElement('div');
-    d.className='p-3 border-b cursor-pointer transition hover:bg-white/[.02]'+(currentChatId===chat.clientId?' bg-white/[.04] border-l-2':'');
+    const isPending=chat.status==='pending';
+    d.className='p-3 border-b cursor-pointer transition'+(currentChatId===chat.clientId?' bg-white/[.06] border-l-2':'')+(isPending?' border-l-2':'');
     d.style.borderColor='var(--border)';
     if(currentChatId===chat.clientId)d.style.borderLeftColor='var(--accent)';
+    else if(isPending)d.style.borderLeftColor='#eab308';
+    if(isPending)d.style.background='rgba(234,179,8,.06)';
     d.onclick=()=>selectChat(chat.clientId);
     const msgs=chat.messages||[];
-    const last=msgs[msgs.length-1];
-    const lastText=last?(last.text||'Файл'):'Нет сообщений';
+    const last=msgs.filter(m=>m.sender==='client').pop();
+    const lastText=last?(last.text||'📎 Файл'):'Нет сообщений от клиента';
     const sc={pending:'text-yellow-400',accepted:'text-green-400',declined:'text-red-400',completed:'text-blue-400'};
-    const sl={pending:'Ожидает',accepted:'Принято',declined:'Отклонено',completed:'Завершено'};
-    d.innerHTML=`<div class="flex justify-between items-center mb-1"><span class="font-medium text-xs text-zinc-300">${chat.clientName||'Клиент'}</span><span class="text-[10px] text-zinc-600">${formatTime(chat.lastMessage)}</span></div><div class="text-[11px] text-zinc-500 truncate mb-1.5">${lastText}</div><div class="flex items-center justify-between"><span class="text-[10px] ${sc[chat.status]||sc.pending}">${sl[chat.status]||'Ожидает'}</span>${chat.unread>0?`<span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold" style="background:var(--accent);color:#fff">${chat.unread}</span>`:''}</div>`;
+    const sl={pending:'⏳ Ожидает ответа',accepted:'✅ Принято',declined:'❌ Отклонено',completed:'🏁 Завершено'};
+    d.innerHTML=`<div class="flex justify-between items-center mb-1"><span class="font-bold text-xs text-white">${chat.clientName||'Клиент'}</span><span class="text-[10px] text-zinc-500">${formatTime(chat.lastMessage)}</span></div><div class="text-[11px] text-zinc-400 truncate mb-1.5">${lastText}</div><div class="flex items-center justify-between"><span class="text-[10px] font-semibold ${sc[chat.status]||sc.pending}">${sl[chat.status]||'⏳ Ожидает ответа'}</span>${chat.unread>0?`<span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold" style="background:var(--accent);color:#fff">${chat.unread} новых</span>`:''}</div>`;
     list.appendChild(d);
   });
 }
@@ -1011,8 +1164,8 @@ function selectChat(chatId){
   currentChatId=chatId;
   const chat=allChatsCache[chatId];
   if(!chat)return;
-  document.getElementById('currentChatName').textContent=chat.clientName;
-  const sl={pending:'Ожидает',accepted:'Принято',declined:'Отклонено',completed:'Завершено'};
+  document.getElementById('currentChatName').textContent='👤 '+(chat.clientName||'Клиент');
+  const sl={pending:'⏳ Ожидает ответа',accepted:'✅ Чат активен',declined:'❌ Чат отклонен',completed:'🏁 Чат завершен'};
   document.getElementById('currentChatStatus').textContent=sl[chat.status]||'—';
   renderManagerMessages(chat.messages||[]);
   renderManagerActions(chat);
@@ -1023,10 +1176,20 @@ function selectChat(chatId){
 function renderManagerActions(chat){
   const el=document.getElementById('managerActions');
   let h='';
-  if(chat.status==='pending'){h+=`<button onclick="acceptChat()" class="btn btn-sm" style="background:#22c55e;color:#fff">OK</button><button onclick="declineChat()" class="btn btn-sm" style="background:#ef4444;color:#fff">X</button>`}
-  if(chat.status==='accepted')h+=`<button onclick="completeChat()" class="btn btn-sm" style="background:#3b82f6;color:#fff">Done</button>`;
-  if(chat.status==='declined')h+=`<button onclick="reopenChat()" class="btn btn-sm" style="background:#eab308;color:#000">Reopen</button>`;
-  if(currentRole==='admin'&&chat.status!=='completed')h+=`<button onclick="resetChat()" class="btn btn-sm btn-ghost">Reset</button>`;
+  if(chat.status==='pending'){
+    h+=`<button onclick="acceptChat()" class="btn btn-sm" style="background:#22c55e;color:#fff;padding:6px 12px;font-size:11px">✅ Принять</button>`;
+    h+=`<button onclick="declineChat()" class="btn btn-sm" style="background:#ef4444;color:#fff;padding:6px 12px;font-size:11px">❌ Отклонить</button>`;
+  }
+  if(chat.status==='accepted'){
+    h+=`<button onclick="completeChat()" class="btn btn-sm" style="background:#3b82f6;color:#fff;padding:6px 12px;font-size:11px">🏁 Завершить</button>`;
+    h+=`<button onclick="declineChat()" class="btn btn-sm" style="background:#ef4444;color:#fff;padding:6px 12px;font-size:11px">❌ Отклонить</button>`;
+  }
+  if(chat.status==='declined'){
+    h+=`<button onclick="reopenChat()" class="btn btn-sm" style="background:#eab308;color:#000;padding:6px 12px;font-size:11px">🔄 Открыть</button>`;
+  }
+  if(currentRole==='admin'&&chat.status!=='completed'){
+    h+=`<button onclick="resetChat()" class="btn btn-sm btn-ghost" style="padding:6px 12px;font-size:11px">🗑️ Сброс</button>`;
+  }
   el.innerHTML=h;
 }
 
@@ -1120,8 +1283,6 @@ function addModerator(){const s=getSettings();if(s.moderators.length>=10)return 
 function updateModerator(i,f,v){const s=getSettings();if(!s.moderators[i])return;s.moderators[i][f]=v;saveSettings(s)}
 function removeModerator(i){if(!confirm('Удалить?'))return;const s=getSettings();s.moderators.splice(i,1);saveSettings(s);renderModeratorsList()}
 
-function formatTime(iso){if(!iso)return '—';const d=new Date(iso),now=new Date(),diff=now-d;if(diff<60000)return 'Сейчас';if(diff<3600000)return Math.floor(diff/60000)+' мин.';if(diff<86400000)return Math.floor(diff/3600000)+' ч.';return d.toLocaleDateString('ru-RU')}
-
 // --- Search ---
 let selPlats=['youtube','vk','telegram','twitch','tiktok'];
 function togglePlat(b){const p=b.dataset.pf;b.classList.toggle('on');if(b.classList.contains('on')){if(!selPlats.includes(p))selPlats.push(p)}else selPlats=selPlats.filter(x=>x!==p)}
@@ -1201,11 +1362,32 @@ document.querySelectorAll('[data-rf]').forEach(b=>{b.addEventListener('click',()
 // SETTINGS: THEMES + LANGUAGES
 // ============================================================
 const translations={
-  ru:{settings:'Настройки',theme:'Тема оформления',language:'Язык',close:'Закрыть',search:'Поиск по платформам...',allPosts:'Все посты',games:'Игры',services:'Услуги',social:'Сообщество',about:'Обо мне',personal:'Личное',stream:'Стрим',schedule:'Расписание',photography:'Фото и видео',support:'Поддержка',follow:'Подписки',donate:'Donate',supportText:'Если нравится контент — поддержи автора!',manager:'Manager',chatSupport:'Поддержка',online:'Онлайн',namePrompt:'Как к вам обращаться?',yourName:'Ваше имя...',message:'Сообщение...',typeMessage:'Введите запрос',nothingFound:'Ничего не найдено',searchError:'Ошибка поиска',closeSearch:'Закрыть'},
-  en:{settings:'Settings',theme:'Theme',language:'Language',close:'Close',search:'Search platforms...',allPosts:'All Posts',games:'Games',services:'Services',social:'Social',about:'About me',personal:'Personal',stream:'Stream',schedule:'Schedule',photography:'Photos & Video',support:'Support',follow:'Follow',donate:'Donate',supportText:'Like the content? Support the author!',manager:'Manager',chatSupport:'Support',online:'Online',namePrompt:'What should we call you?',yourName:'Your name...',message:'Message...',typeMessage:'Enter search query',nothingFound:'Nothing found',searchError:'Search error',closeSearch:'Close'}
+  ru:{settings:'Настройки',theme:'Тема оформления',palette:'Палитра цветов',language:'Язык',fontSize:'Размер шрифта',close:'Закрыть',search:'Поиск по платформам...',allPosts:'Все посты',games:'Игры',services:'Услуги',social:'Сообщество',about:'Обо мне',personal:'Личное',stream:'Стрим',schedule:'Расписание',photography:'Фото и видео',support:'Поддержка',follow:'Подписки',donate:'Donate',supportText:'Если нравится контент — поддержи автора!',manager:'Менеджер',chatSupport:'Поддержка',online:'Онлайн',namePrompt:'Как к вам обращаться?',yourName:'Ваше имя...',message:'Сообщение...',typeMessage:'Введите запрос',nothingFound:'Ничего не найдено',searchError:'Ошибка поиска',closeSearch:'Закрыть',hello:'Привет, я',aboutText1:'Стример, фотограф, создатель контента. Стримлю на Twitch, снимаю видео для YouTube и TikTok, делаю фотосессии. Здесь — мой личный блог, где я делюсь мыслями, проектами и тем, чем занимаюсь.',aboutText2:'Если хочешь пообщаться или заказать услугу — пиши в чат или ВКонтакте. Подписывайся на каналы, чтобы не пропустить новые посты и стримы.',streamSchedule:'Расписание стримов',streamText:'Стримлю регулярно на Twitch. Основные дни — будние вечера. Подписывайся на Telegram-канал, чтобы получать уведомления о начале эфира.',myServices:'Мои услуги',servicesText:'Фотосессии, монтаж видео, коллаборации. Все подробности — в карточках ниже.',orderVk:'Напишите ВКонтакте для заказа',myChannels:'Мои каналы',liveStreams:'Прямые эфиры',videosClips:'Видео и нарезки',channelNews:'Канал и новости',personalPage:'Личная страница',booking:'Запись на съемку',shortVideos:'Короткие видео',exclusive:'Эксклюзивный контент',supportAuthor:'Поддержать автора',role:'Стример · Фотограф · Контент-мейкер',clicker:'Кликер',clickerText:'Мой проект. Кликай и ставь рекорды!',play:'Играть',minecraftText:'Напиши «добавь меня белый список» в Telegram-канал!',goToTelegram:'Перейти в Telegram',steamText:'Мой профиль и достижения.',openProfile:'Открыть профиль',footer:'Made with care for the community.',noInternet:'Нет подключения к интернету',serverError:'Ошибка сервера',connectionLost:'Соединение потеряно',tryAgain:'Попробовать снова'},
+  en:{settings:'Settings',theme:'Theme',palette:'Color Palette',language:'Language',fontSize:'Font Size',close:'Close',search:'Search platforms...',allPosts:'All Posts',games:'Games',services:'Services',social:'Social',about:'About me',personal:'Personal',stream:'Stream',schedule:'Schedule',photography:'Photos & Video',support:'Support',follow:'Follow',donate:'Donate',supportText:'Like the content? Support the author!',manager:'Manager',chatSupport:'Support',online:'Online',namePrompt:'What should we call you?',yourName:'Your name...',message:'Message...',typeMessage:'Enter search query',nothingFound:'Nothing found',searchError:'Search error',closeSearch:'Close',hello:'Hi, I am',aboutText1:'Streamer, photographer, content creator. I stream on Twitch, make videos for YouTube and TikTok, do photoshoots. This is my personal blog where I share thoughts, projects and what I do.',aboutText2:'Want to chat or order a service? Write in chat or VK. Subscribe to channels so you don\'t miss new posts and streams.',streamSchedule:'Stream Schedule',streamText:'I stream regularly on Twitch. Main days are weekday evenings. Subscribe to the Telegram channel to get notifications about the start of the broadcast.',myServices:'My Services',servicesText:'Photoshoots, video editing, collaborations. All details are in the cards below.',orderVk:'Write to VKontakte to order',myChannels:'My Channels',liveStreams:'Live streams',videosClips:'Videos & clips',channelNews:'Channel & news',personalPage:'Personal page',booking:'Book a photoshoot',shortVideos:'Short videos',exclusive:'Exclusive content',supportAuthor:'Support the author',role:'Streamer · Photographer · Content Creator',clicker:'Clicker',clickerText:'My project. Click and set records!',play:'Play',minecraftText:'Write "add me to whitelist" in the Telegram channel!',goToTelegram:'Go to Telegram',steamText:'My profile and achievements.',openProfile:'Open profile',footer:'Made with care for the community.',noInternet:'No internet connection',serverError:'Server error',connectionLost:'Connection lost',tryAgain:'Try again'}
 };
 let currentLang=localStorage.getItem('ml_lang')||'ru';
 let currentTheme=localStorage.getItem('ml_theme')||'dark';
+let currentAccent=localStorage.getItem('ml_accent')||'#FF0055';
+let currentAccent2=localStorage.getItem('ml_accent2')||'#7000FF';
+let currentFontSize=localStorage.getItem('ml_fontSize')||'14';
+
+function setAccent(a1,a2){
+  currentAccent=a1;currentAccent2=a2;
+  localStorage.setItem('ml_accent',a1);localStorage.setItem('ml_accent2',a2);
+  document.documentElement.style.setProperty('--accent',a1);
+  document.documentElement.style.setProperty('--accent2',a2);
+  document.querySelectorAll('#colorPalette button').forEach(b=>{
+    b.style.borderColor=b.dataset.accent===a1?'#fff':'transparent';
+    b.style.transform=b.dataset.accent===a1?'scale(1.15)':'scale(1)';
+  });
+}
+
+function setFontSize(s){
+  currentFontSize=s;
+  localStorage.setItem('ml_fontSize',s);
+  document.documentElement.style.setProperty('--font-size',s+'px');
+  document.getElementById('fontSizeValue').textContent=s+'px';
+}
 
 function setTheme(t){
   currentTheme=t;
@@ -1256,12 +1438,16 @@ function openUserSettings(){
     b.style.borderColor=b.dataset.themeBtn===currentTheme?'var(--accent)':'var(--border)';
     b.style.background=b.dataset.themeBtn===currentTheme?'rgba(255,0,85,.1)':'transparent';
   });
+  document.getElementById('fontSizeSlider').value=currentFontSize;
+  document.getElementById('fontSizeValue').textContent=currentFontSize+'px';
 }
 function closeUserSettings(){document.getElementById('userSettingsModal').classList.remove('active')}
 
-// Init theme + lang on load
+// Init theme + lang + accent + font size on load
 setTheme(currentTheme);
 setLang(currentLang);
+setAccent(currentAccent,currentAccent2);
+setFontSize(currentFontSize);
 </script>
 </body>
 </html>
